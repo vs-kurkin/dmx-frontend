@@ -1,0 +1,15 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "modules": false,
+        "useBuiltIns": "usage",
+        "targets": [
+          "last 2 versions",
+          { "node": "current" }
+        ]
+      }
+    ]
+  ]
+}

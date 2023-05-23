@@ -1,13 +1,16 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "outDir": "dist",
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
     "composite": true,
-    "sourceMap": true,
     "isolatedModules": true,
     "esModuleInterop": true,
+    "plugins": [{
+      "name": "@vue/babel-preset-app"
+    }],
     "paths": {
       "@/*": [
         "./src/*"

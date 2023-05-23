@@ -1,11 +1,17 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "outDir": "dist",
+    "module": "esnext",
+    "moduleResolution": "node",
     "isolatedModules": true,
     "alwaysStrict": true,
-    "strict": true
+    "strict": true,
+    "sourceMap": true,
+    "traceResolution": true,
+    "plugins": [{
+      "name": "@vue/babel-preset-app"
+    }]
   },
   "extends": "@vue/tsconfig/tsconfig.json",
   "references": [
