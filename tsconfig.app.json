@@ -1,23 +1,26 @@
 {
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "composite": true,
+    "sourceMap": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "exclude": [
+    "./src/**/__tests__/*",
+    "node_modules"
+  ],
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
     "env.d.ts",
-    "src/**"
-  ],
-  "exclude": [
-    "src/**/__tests__/*",
-    "node_modules"
-  ],
-  "compileOnSave": true,
-  "compilerOptions": {
-    "baseUrl": ".",
-    "composite": true,
-    "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    },
-    "sourceMap": true,
-    "strict": true
-  }
+    "./src/**/*"
+  ]
 }

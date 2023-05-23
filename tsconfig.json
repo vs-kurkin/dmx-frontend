@@ -1,11 +1,16 @@
 {
-  "files": [],
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "alwaysStrict": true,
+  },
   "references": [
     {
-      "path": "./tsconfig.node.json"
+      "path": "tsconfig.app.json"
     },
     {
-      "path": "./tsconfig.app.json"
+      "path": "tsconfig.node.json"
     }
   ]
 }

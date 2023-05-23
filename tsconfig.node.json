@@ -1,19 +1,26 @@
 {
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "composite": true,
+    "sourceMap": false,
+    "isolatedModules": false,
+    "esModuleInterop": false,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
   "extends": "@tsconfig/node18/tsconfig.json",
   "include": [
+    "env.d.ts",
     "vite.config.*",
     "vitest.config.*",
     "cypress.config.*",
-    "playwright.config.*"
-  ],
-  "compilerOptions": {
-    "baseUrl": "./src",
-    "composite": true,
-    "esModuleInterop": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "pretty": true,
-    "rootDir": ".",
-    "target": "ESNext"
-  }
+    "playwright.config.*",
+    "./src/**/*"
+  ]
 }
