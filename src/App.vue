@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" type="module">
 import { ref } from 'vue'
 import { RouterView } from 'vue-router'
 import Menubar from 'primevue/menubar'
