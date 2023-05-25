@@ -9,9 +9,11 @@
     "strict": true,
     "sourceMap": true,
     "traceResolution": true,
-    "plugins": [{
-      "name": "@vue/babel-preset-app"
-    }]
+    "plugins": [
+      {
+        "name": "@vue/babel-preset-app"
+      }
+    ]
   },
   "extends": "@vue/tsconfig/tsconfig.json",
   "references": [

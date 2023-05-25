@@ -25,6 +25,7 @@
     "vitest.config.*",
     "cypress.config.*",
     "playwright.config.*",
-    "./src/**/*"
+    "src/**/*",
+    "src/**/*.vue"
   ]
 }

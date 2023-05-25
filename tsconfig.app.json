@@ -8,9 +8,11 @@
     "composite": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "plugins": [{
-      "name": "@vue/babel-preset-app"
-    }],
+    "plugins": [
+      {
+        "name": "@vue/babel-preset-app"
+      }
+    ],
     "paths": {
       "@/*": [
         "./src/*"
@@ -24,6 +26,7 @@
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
     "env.d.ts",
-    "./src/**/*"
+    "src/**/*",
+    "src/**/*.vue"
   ]
 }
