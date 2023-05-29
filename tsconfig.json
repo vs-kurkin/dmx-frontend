@@ -1,27 +1,41 @@
 {
-  "compileOnSave": true,
   "compilerOptions": {
-    "outDir": "dist",
+    "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "node",
-    "isolatedModules": true,
-    "alwaysStrict": true,
     "strict": true,
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "useDefineForClassFields": true,
     "sourceMap": true,
-    "traceResolution": true,
-    "plugins": [
-      {
-        "name": "@vue/babel-preset-app"
-      }
+    "baseUrl": ".",
+    "types": [
+      "webpack-env",
+      "jest"
+    ],
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
     ]
   },
-  "extends": "@vue/tsconfig/tsconfig.json",
-  "references": [
-    {
-      "path": "tsconfig.app.json"
-    },
-    {
-      "path": "tsconfig.node.json"
-    }
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "tests/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

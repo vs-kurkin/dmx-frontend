@@ -1,11 +1,11 @@
-<script setup lang="ts">
+<script setup lang='ts'>
+import { PrimeIcons } from 'primevue/api'
+import Button from 'primevue/button'
+import Menu from 'primevue/menu'
+import Menubar from 'primevue/menubar'
 import { ref } from 'vue'
-import Menubar from 'primevue/menubar';
-import Menu from 'primevue/menu';
-import Button from 'primevue/button';
-import { PrimeIcons } from 'primevue/api';
 
-const menu = ref();
+const menu = ref()
 const items = ref([
   {
     label: 'Dashboard',
@@ -29,16 +29,16 @@ const items = ref([
   },
 ])
 
-const toggle = (event) => {
-  menu.value.toggle(event);
-};
+const toggle = (event: UIEvent) => {
+  menu.value.toggle(event)
+}
 </script>
 
 <template>
-  <Menubar :model="items" class="w-full">
+  <Menubar :model='items' class='w-full'>
     <template #end>
-      <Button type="button" @click="toggle" icon="pi pi-cog" aria-haspopup="true" aria-controls="overlay_menu" />
-        <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" />
+      <Button type='button' @click='toggle' icon='pi pi-cog' aria-haspopup='true' aria-controls='overlay_menu' />
+      <Menu ref='menu' id='overlay_menu' :model='items' :popup='true' />
       <Toast />
     </template>
   </Menubar>

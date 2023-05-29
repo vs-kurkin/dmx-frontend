@@ -1,0 +1,34 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+max_line_length = 120
+tab_width = 4
+trim_trailing_whitespace = true
+
+[*.sass]
+indent_size = 2
+
+[*.vue]
+indent_size = 2
+tab_width = 2
+
+[{*.ats,*.cts,*.mts,*.ts}]
+indent_size = 2
+tab_width = 2
+
+[{*.cjs,*.js}]
+indent_size = 2
+max_line_length = 100
+tab_width = 2
+
+[{*.har,*.jsb2,*.jsb3,*.json,.babelrc,.eslintrc,.prettierrc,.stylelintrc,bowerrc,jest.config,nest-cli.json}]
+indent_size = 2
+
+[{*.htm,*.html,*.sht,*.shtm,*.shtml}]
+indent_size = 2
+tab_width = 2

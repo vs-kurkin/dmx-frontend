@@ -2,11 +2,12 @@
   "$schema": "https://json.schemastore.org/prettierrc",
   "embeddedLanguageFormatting": "auto",
   "endOfLine": "lf",
-  "parser": "vue",
-  "printWidth": 100,
+  "parser": "babel-ts",
+  "printWidth": 120,
   "semi": false,
   "singleQuote": true,
   "tabWidth": 2,
   "trailingComma": "all",
-  "useTabs": false
+  "useTabs": false,
+  "editorconfig": true
 }
