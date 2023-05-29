@@ -2,23 +2,10 @@
 import { ref } from 'vue'
 import InputNumber from 'primevue/inputnumber'
 import Slider from 'primevue/slider'
-<<<<<<< HEAD
-
-export interface Props {
-  channel: number
-  label?: string
-  min?: number
-  max?: number
-  value?: number
-}
-
-const props = withDefaults(defineProps<Props>(), {
-=======
 import type { Channel } from "@/types/DMX";
 
 const props = withDefaults(defineProps<Channel>(), {
   channel: 0,
->>>>>>> bc90574 (Init)
   value: 0,
   min: 0,
   max: 255,
@@ -40,11 +27,7 @@ const value = ref(props.value)
       {{ channel }}
     </div>
 
-<<<<<<< HEAD
-    <Slider v-model="value" :min="min" :max="max" orientation="vertical" class="h-20rem m-auto" />
-=======
     <Slider v-model="value" :min="min" :max="max" orientation="vertical" class="h-15rem m-auto" />
->>>>>>> bc90574 (Init)
 
     <InputNumber v-model="value" :min="min" :max="max" class="mt-3" inputClass="w-1 text-center" />
   </div>

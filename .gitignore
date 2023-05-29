@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# Logs
-*.log
-=======
 .DS_Store
 node_modules
 /dist
@@ -13,25 +9,10 @@ node_modules
 .env.*.local
 
 # Log files
->>>>>>> bc90574 (Init)
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-<<<<<<< HEAD
-lerna-debug.log*
-
-.DS_Store
-*.local
-
-node_modules
-dist
-
-# Editor directories and files
-.idea
-*.iml
-*.js
-=======
 
 # Editor directories and files
 .idea
@@ -42,4 +23,3 @@ dist
 *.njsproj
 *.sln
 *.sw?
->>>>>>> bc90574 (Init)
