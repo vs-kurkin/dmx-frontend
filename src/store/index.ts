@@ -1,11 +1,15 @@
-import { createStore } from "vuex";
+import
+{ type InjectionKey } from 'vue';
+import { createStore } from 'vuex';
+import plugins from './plugins';
+import modules from './modules';
+import type { Store, State } from './types';
 
-export default createStore({
-  state: {
-    channel: {}
-  },
-  getters: {},
-  mutations: {},
-  actions: {},
-  modules: {},
-});
+const store: Store = createStore<State>({
+  plugins,
+  modules,
+})
+
+export default store
+
+export const StoreKey: InjectionKey<Store> = Symbol();

@@ -1,23 +1,31 @@
-import 'primeicons/primeicons.css'
-import 'primevue/resources/primevue.min.css'
-import 'primevue/resources/themes/viva-dark/theme.css'
+import './assets/main.css'
 
-import PrimeVue from 'primevue/config'
-import Tooltip from 'primevue/tooltip'
+import 'primevue/resources/themes/viva-dark/theme.css'
+import 'primevue/resources/primevue.min.css'
+import 'primeicons/primeicons.css'
 
 import { createApp } from 'vue'
+import PrimeVue from 'primevue/config'
+import Tooltip from 'primevue/tooltip'
+import ToastService from 'primevue/toastservice'
+import DialogService from 'primevue/dialogservice'
+import ConfirmationService from 'primevue/confirmationservice'
 
-import './assets/main.css'
-import App from './App.vue'
-import router from './router'
-import store from './store'
+import App from '@/App.vue'
+import router from '@/router'
+import store, { StoreKey } from '@/store'
 
 const app = createApp(App)
 
-app.use(router)
+/* Plugins */
 app.use(PrimeVue)
-app.use(store)
+app.use(router)
+app.use(store, StoreKey)
+app.use(ToastService)
+app.use(DialogService)
+app.use(ConfirmationService)
 
+/* Directives */
 app.directive('tooltip', Tooltip)
 
 app.mount('#app')

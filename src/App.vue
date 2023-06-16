@@ -1,14 +1,22 @@
-<script setup lang='ts'>
-import HeaderMenu from '@/components/HeaderMenu.vue'
+<script setup lang="ts" type="tsx">
+import DynamicDialog from 'primevue/dynamicdialog'
+import ConfirmDialog from 'primevue/confirmdialog'
 import { RouterView } from 'vue-router'
+import HeaderMenu from '@/components/TopMenu.vue'
 </script>
 
 <template>
   <header>
+    <!--suppress JSUnresolvedLibraryURL -->
+    <link
+      href="https://unpkg.com/primeflex@3.3.1/primeflex.css"
+      rel="stylesheet"
+    >
     <HeaderMenu />
   </header>
 
   <RouterView />
-</template>
 
-<style scoped></style>
+  <DynamicDialog />
+  <ConfirmDialog />
+</template>
