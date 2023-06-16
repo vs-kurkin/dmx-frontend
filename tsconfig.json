@@ -1,33 +1,52 @@
 {
+  "compileOnSave": true,
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "strict": true,
-    "jsx": "preserve",
-    "moduleResolution": "node",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "useDefineForClassFields": true,
-    "sourceMap": true,
     "baseUrl": ".",
-    "types": [
-      "webpack-env",
-      "jest"
-    ],
-    "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    },
+    "composite": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
     "lib": [
       "esnext",
       "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
+      "ScriptHost"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "noFallthroughCasesInSwitch": false,
+    "noImplicitAny": false,
+    "outDir": "dist",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "@vue/babel-preset-app"
+      }
+    ],
+    "removeComments": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strictBindCallApply": false,
+    "strictNullChecks": false,
+    "strict": true,
+    "target": "ESNext",
+    "types": [
+      "webpack-env",
+      "jest",
+      "vite/client",
+      "node"
+    ],
+    "useDefineForClassFields": true
   },
+  "exclude": [
+    "node_modules"
+  ],
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
@@ -35,7 +54,10 @@
     "tests/**/*.ts",
     "tests/**/*.tsx"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "rules": {
+    "@typescript-eslint/indent": [
+      "error",
+      "space"
+    ]
+  }
 }

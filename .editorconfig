@@ -1,34 +1,24 @@
 root = true
 
 [*]
-charset = utf-8
-end_of_line = lf
-indent_size = 4
 indent_style = space
+indent_size = 2
+end_of_line = lf
 insert_final_newline = true
-max_line_length = 120
-tab_width = 4
 trim_trailing_whitespace = true
+charset = utf-8
 
-[*.sass]
-indent_size = 2
+[*.min.*]
+indent_style = unset
+trim_trailing_whitespace = false
+insert_final_newline = unset
 
-[*.vue]
-indent_size = 2
-tab_width = 2
+[*.{md,txt}]
+indent_size = 4
+trim_trailing_whitespace = false
 
-[{*.ats,*.cts,*.mts,*.ts}]
-indent_size = 2
-tab_width = 2
+[Makefile]
+indent_style = space
 
-[{*.cjs,*.js}]
-indent_size = 2
-max_line_length = 100
-tab_width = 2
-
-[{*.har,*.jsb2,*.jsb3,*.json,.babelrc,.eslintrc,.prettierrc,.stylelintrc,bowerrc,jest.config,nest-cli.json}]
-indent_size = 2
-
-[{*.htm,*.html,*.sht,*.shtm,*.shtml}]
-indent_size = 2
-tab_width = 2
+[CHANGELOG.md]
+indent_size = unset
