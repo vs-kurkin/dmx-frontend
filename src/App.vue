@@ -2,7 +2,7 @@
 import DynamicDialog from 'primevue/dynamicdialog'
 import ConfirmDialog from 'primevue/confirmdialog'
 import { RouterView } from 'vue-router'
-import HeaderMenu from '@/components/TopMenu.vue'
+import TopMenu from '@/components/TopMenu.vue'
 </script>
 
 <template>
@@ -12,7 +12,7 @@ import HeaderMenu from '@/components/TopMenu.vue'
       href="https://unpkg.com/primeflex@3.3.1/primeflex.css"
       rel="stylesheet"
     >
-    <HeaderMenu />
+    <TopMenu />
   </header>
 
   <RouterView />

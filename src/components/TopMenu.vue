@@ -1,30 +1,31 @@
 <script setup lang="ts" type="tsx">
 import SettingsBar from '@/components/SettingsBar.vue'
-import { ref } from 'vue'
 import { PrimeIcons } from 'primevue/api'
 import Button from 'primevue/button'
 import Menubar from 'primevue/menubar'
+import { ref } from 'vue'
+
 const items = ref([
-/*  {
-    label: 'Dashboard',
-    icon: PrimeIcons.HOME,
-    route: 'desk',
-  },
-  {
-    label: 'Devices',
-    icon: PrimeIcons.SUN,
-    route: 'desk',
-  },*/
+  // {
+  //   label: 'Dashboard',
+  //   icon: PrimeIcons.HOME,
+  //   route: 'desk',
+  // },
+  // {
+  //   label: 'Devices',
+  //   icon: PrimeIcons.SUN,
+  //   route: 'desk',
+  // },
   {
     label: 'Desk',
     icon: PrimeIcons.SLIDERS_V,
     route: 'desk',
-  },/*
-  {
-    label: 'Playground',
-    icon: PrimeIcons.PLAY,
-    route: 'desk',
-  },*/
+  },
+  // {
+  //   label: 'Playground',
+  //   icon: PrimeIcons.PLAY,
+  //   route: 'desk',
+  // },
 ])
 
 const showSettings = ref(false)

@@ -1,4 +1,5 @@
-import { Context, Store } from '@/store/types'
+import { getValues } from '@/api/dmx'
+import type { Context, Store } from '@/store/types'
 
 export type ChannelPayload = {
   name: string,
@@ -6,36 +7,43 @@ export type ChannelPayload = {
   value: number,
 }
 
-export interface BulkChannelPayload {
-  readonly [key: number]: number
-}
+export type BulkChannelPayload = number[]
 
-export interface State {
-  channel: Map<number, number>
+export interface DMXState {
+  channel: number[]
 }
 
 export default {
-  namespaced: true,
-
   state: {
     channel: new Array(513).fill(0),
   },
 
   mutations: {
-    channel(state: State, { channel, value }: ChannelPayload) {
+    channel(state: DMXState, { channel, value }: ChannelPayload) {
       state.channel[channel] = value
+    },
+
+    channels(state: DMXState, values: BulkChannelPayload) {
+      state.channel.length = 0
+      state.channel.push(0, ...values)
     },
   },
 
   actions: {
-    update(this: Store, ctx: Context, payload: ChannelPayload) {
-      if (this.state.dmx.channel[payload.channel] === payload.value/* || state.universe.get(universe) == null*/) {
-        return
-      }
-
+    updateChannel(this: Store, ctx: Context, payload: ChannelPayload) {
       this.socket.emitSocket('update', payload)
 
-      this.commit('dmx/channel', payload)
+      this.commit('channel', payload)
+    },
+
+    async getAllChannelValues(this: Store, ctx: Context, name: string) {
+      const values = await getValues(name)
+
+      this.commit('channels', values)
+    },
+
+    resetAllChannelValues(this: Store) {
+      this.commit('channels', new Array(512).fill(0))
     }
   },
 }

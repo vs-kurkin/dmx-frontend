@@ -1,6 +1,7 @@
 <script setup lang="ts" type="tsx">
 import { getDevices } from '@/api/serial'
 import { StoreKey } from '@/store'
+import type { State, Store } from '@/store/types'
 import Button from 'primevue/button'
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions'
 import Listbox from 'primevue/listbox'
@@ -8,8 +9,8 @@ import { useToast } from 'primevue/usetoast'
 import { inject, onMounted, Ref, ref } from 'vue'
 import { useStore } from 'vuex'
 
-const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
-const store = useStore(StoreKey)
+const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
+const store: Store<State> = useStore<State>(StoreKey)
 const toast = useToast()
 
 const drivers = ref<string[]>(store.state.universe.drivers)

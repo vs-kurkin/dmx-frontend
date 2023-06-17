@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client';
-import { host, options } from '@/configs/websocket';
+import { host, port, options } from '@/configs/websocket';
 import type { Store } from '@/store/types';
 
 export const EVENT_CONNECT = 'connect';
@@ -59,7 +59,7 @@ export class Adapter {
 
 
 export default (store: Store) => {
-  const socket: Socket = io(host, options);
+  const socket: Socket = io(`${host}:${port}`, options);
 
   store.socket = new Adapter(socket, store);
 };

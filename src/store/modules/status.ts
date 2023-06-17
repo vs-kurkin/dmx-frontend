@@ -1,6 +1,10 @@
 import type { UniverseState } from '@/store/modules/universe'
-import { Context, Store } from '@/store/types'
+import type { Context, Store } from '@/store/types'
 
+
+export interface StatusState {
+  connected: boolean
+}
 
 export default {
   state: {

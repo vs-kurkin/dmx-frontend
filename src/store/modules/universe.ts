@@ -1,5 +1,5 @@
-import { addUniverse, deleteAllUniverses, deleteUniverse, getDrivers, getUniverses } from '@/api/universe'
-import { Context, Store } from '@/store/types'
+import { addUniverse, deleteAllUniverses, deleteUniverse, getDrivers, getUniverses } from '@/api/dmx'
+import type { Context, Store } from '@/store/types'
 
 export type UniverseState = {
   current: string | null
@@ -47,7 +47,7 @@ export default {
     },
   },
   actions: {
-    async setCurrent(this: Store, { state }: Context<UniverseState>, name: string) {
+    async setCurrentUniverse(this: Store, { state }: Context<UniverseState>, name: string) {
       if (state.current === name) {
         return
       }

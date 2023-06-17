@@ -1,10 +1,10 @@
 <script setup lang="ts" type="tsx">
 import AddUniverseDialog from '@/components/modal/UniverseContent.vue'
 import UniverseHeader from '@/components/modal/UniverseHeader.vue'
+import UniverseSelect from '@/components/settings/UniverseList.vue'
 import { StoreKey } from '@/store'
 import { State, Store } from '@/store/types'
 import Button from 'primevue/button'
-import UniverseSelect from '@/components/settings/UniverseList.vue'
 import Toast from 'primevue/toast'
 import { useConfirm } from 'primevue/useconfirm'
 import { useDialog } from 'primevue/usedialog'
@@ -17,7 +17,7 @@ const dialog = useDialog()
 const confirm = useConfirm()
 const toast = useToast()
 
-const store: Store = useStore<State>(StoreKey)
+const store: Store<State> = useStore<State>(StoreKey)
 const universes = ref<string[]>(store.state.universe.list)
 
 const deleteAllUniverses = () => {

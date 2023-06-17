@@ -1,6 +1,15 @@
 import { DELETE, GET, jsonParse, POST, setup } from '@/plugins/fetch'
 
-export type Driver = 'null' | 'socketio' | 'dmx4all' | 'enttec-usb-dmx-pro' | 'enttec-open-usb-dmx' | 'dmxking-ultra-dmx-pro' | 'artnet' | 'bbdmx' | 'sacn'
+export type Driver =
+  'null'
+  | 'socketio'
+  | 'dmx4all'
+  | 'enttec-usb-dmx-pro'
+  | 'enttec-open-usb-dmx'
+  | 'dmxking-ultra-dmx-pro'
+  | 'artnet'
+  | 'bbdmx'
+  | 'sacn'
 export type UniverseOptions = {
   name: string
   path: string
@@ -21,7 +30,7 @@ export const addUniverse = (options: UniverseOptions) =>
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(options)
+    body: JSON.stringify(options),
   })
 
 export const deleteUniverse = (name: string) =>
@@ -29,3 +38,6 @@ export const deleteUniverse = (name: string) =>
 
 export const deleteAllUniverses = () =>
   serial<void>('', DELETE)
+
+export const getValues = (name: string) =>
+  serial<number[]>(`/${name}/values/`, GET)

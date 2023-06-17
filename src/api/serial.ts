@@ -1,5 +1,5 @@
 import { GET, jsonParse, setup } from '@/plugins/fetch'
-import { SerialDevice } from '@/store/modules/universe'
+import { type SerialDevice } from '@/store/modules/universe'
 
 const serial = setup('serial', jsonParse)
 

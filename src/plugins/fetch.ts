@@ -1,4 +1,4 @@
-import { baseUrl } from '@/configs/fetch'
+import { baseHost, basePort } from '@/configs/fetch'
 
 export type Url = URL | string
 export type Options = RequestInit
@@ -6,6 +6,8 @@ export type Result<T> = Promise<T | void>
 
 export type Sender = (url: Url, options?: Options) => Promise<Response>
 export type Handler = <T>(response: Response) => Result<T>
+
+const BASE_URL = `${baseHost}:${basePort}`
 
 export const errorHandler: Handler = async <T>(response: Response): Result<T> => {
   if (!response.ok) {
@@ -23,7 +25,7 @@ export const jsonParse: Handler = async <T>(response: Response): Result<T> => {
 
 
 export const sender: Sender = async (url: Url = '', options?: RequestInit): Promise<Response> =>
-  await fetch(new URL(url, baseUrl), options)
+  await fetch(new URL(url, BASE_URL), options)
 
 
 export const target = (defaults?: Options, handler = errorHandler) =>

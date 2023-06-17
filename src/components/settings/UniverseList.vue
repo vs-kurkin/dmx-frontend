@@ -3,12 +3,12 @@ import UniverseListener from '@/components/settings/UniverseListener.vue'
 import { StoreKey } from '@/store'
 import { State, Store } from '@/store/types'
 import Button from 'primevue/button'
-import Listbox from 'primevue/listbox'
+import Listbox, { ListboxChangeEvent } from 'primevue/listbox'
 import { useConfirm } from 'primevue/useconfirm'
 import { ref } from 'vue'
 import { useStore } from 'vuex'
 
-const store: Store = useStore<State>(StoreKey)
+const store: Store<State> = useStore<State>(StoreKey)
 const confirm = useConfirm()
 
 const universe = ref<string>(store.state.universe.current)
@@ -29,8 +29,14 @@ const deleteUniverse = async (event: PointerEvent, name: string) => {
   })
 }
 
-const changeUniverse = (event) => {
-  store.dispatch('setCurrent', event.value)
+const changeUniverse = ({value}: ListboxChangeEvent) => {
+  store.dispatch('setCurrentUniverse', value)
+
+  if (value == null) {
+    store.dispatch('resetAllChannelValues')
+  } else {
+    store.dispatch('getAllChannelValues', value)
+  }
 }
 </script>
 

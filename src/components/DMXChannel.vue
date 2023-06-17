@@ -1,11 +1,11 @@
 <script setup lang="ts" type="tsx">
-import type { Store } from '@/store/types'
+import { StoreKey } from '@/store'
+import type { State, Store } from '@/store/types'
+import Button from 'primevue/button'
+import InputNumber from 'primevue/inputnumber'
+import Slider from 'primevue/slider'
 import { ref } from 'vue'
 import { useStore } from 'vuex'
-import InputNumber from 'primevue/inputnumber'
-import Button from 'primevue/button'
-import Slider from 'primevue/slider'
-import { StoreKey } from '@/store'
 
 export interface Props {
   address: number
@@ -30,24 +30,28 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
 })
 
-const store: Store = useStore(StoreKey)
+const store: Store<State> = useStore<State>(StoreKey)
 
-const value = ref(store.state.dmx.channel[props.address])
+const channel = ref(store.state.dmx.channel)
 
-const onChange = async (value: number) => {
-  await store.dispatch('dmx/update', {
+let currentValue: number = store.state.dmx.channel[props.address]
+
+const updateChannel = async (value: number) => {
+  if (currentValue === value) {
+    return
+  }
+  await store.dispatch('updateChannel', {
+    name: store.state.universe.current,
     channel: props.address,
     value,
   })
 
   emit('update', props.address, value)
+
+  currentValue = value
 }
 
-const onReset = async () => {
-  await onChange(0)
-
-  value.value = 0
-}
+const resetChannel = () => updateChannel(0)
 </script>
 
 <template>
@@ -60,30 +64,31 @@ const onReset = async () => {
       }"
       text
       outlined
-      :disabled="disabled || value === 0"
+      :disabled="disabled || channel[props.address] === 0"
       class="channel-number"
-      @click="onReset"
+      @click="resetChannel"
     >
       {{ address }}
     </Button>
 
     <Slider
-      v-model="value"
+      v-model="channel[props.address]"
       :min="min"
       :max="max"
       :disabled="disabled"
       orientation="vertical"
       class="h-20rem m-auto w-2 channel-slider"
-      @change="onChange"
+      @update:model-value="updateChannel"
     />
 
     <InputNumber
-      v-model="value"
+      v-model="channel[props.address]"
       :min="min"
       :max="max"
       :disabled="disabled"
       class="channel-value"
       input-class="w-1 text-center"
+      @update:model-value="updateChannel"
     />
   </div>
 </template>
@@ -115,8 +120,8 @@ const onReset = async () => {
   width: 2.7rem;
   height: 2rem;
   left: 0 !important;
-  margin-left: -18px;
-  margin-bottom: -24px;
+  margin-left: -18px !important;
+  margin-bottom: -24px !important;
   border-radius: 0.4em;
   border-width: 1px;
 }

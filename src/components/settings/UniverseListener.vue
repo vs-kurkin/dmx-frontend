@@ -7,7 +7,7 @@ import Toast from 'primevue/toast'
 import { useToast } from 'primevue/usetoast'
 import { useStore } from 'vuex'
 
-const store: Store = useStore<State>(StoreKey)
+const store: Store<State> = useStore<State>(StoreKey)
 const toast = useToast()
 
 const onConnect = async () => {

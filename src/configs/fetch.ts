@@ -1,3 +1,3 @@
+export const baseHost = import.meta.env.VITE_API_HOST || window.location.origin
 
-
-export const baseUrl = 'http://127.0.0.1:8080/'
+export const basePort = import.meta.env.VITE_API_PORT || window.location.port

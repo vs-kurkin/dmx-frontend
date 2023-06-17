@@ -1,13 +1,14 @@
 <script setup lang="ts" type="tsx">
-import { useStore } from 'vuex'
+import { StoreKey } from '@/store'
 import {
   EVENT_CONNECT,
-  EVENT_DISCONNECT, EVENT_ERROR,
+  EVENT_DISCONNECT,
+  EVENT_ERROR,
   EVENT_EXCEPTION,
   EVENT_SOCKET_ERROR,
 } from '@/store/plugins/websocket'
-import { StoreKey } from '@/store'
 import type { State, Store } from '@/store/types'
+import { useStore } from 'vuex'
 
 export interface Props {
   listenType: string
