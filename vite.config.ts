@@ -4,11 +4,15 @@ import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
 
+export const DEFAULT_HOST = '0.0.0.0'
+export const DEFAULT_PORT = 80
+
 export default defineConfig({
+
   plugins: [vue(), vueJsx()],
   server: {
-    host: process.env.VITE_HOST || '0.0.0.0',
-    port: Number(process.env.VITE_PORT) || 80,
+    host: process.env.VITE_HOST || DEFAULT_HOST,
+    port: Number(process.env.VITE_PORT) || DEFAULT_PORT,
     cors: {
       origin: process.env.NODE_ENV === 'production' ? false : ['*'],
     },

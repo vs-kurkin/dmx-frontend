@@ -1,7 +1,9 @@
 import type { DMXState } from '@/store/modules/dmx'
+import type { SettingsState } from '@/store/modules/settings'
 import type { StatusState } from '@/store/modules/status'
 import type { UniverseState } from '@/store/modules/universe'
-import type { Adapter } from '@/store/plugins/websocket'
+import type { SocketAdapter } from '@/store/plugins/websocket'
+import type { StorageFacade } from '@/store/plugins/localStorage'
 import type { ActionContext, Store as VuexStore } from 'vuex'
 
 export interface State {
@@ -10,10 +12,12 @@ export interface State {
   error: string
   dmx: DMXState
   status: StatusState
+  settings: SettingsState
 }
 
 export type Store<S = Store> = VuexStore<S> & {
-  socket?: Adapter
+  socket?: SocketAdapter
+  storage?: StorageFacade
 }
 
 export type Context<S = State, R = State> = ActionContext<S, R>

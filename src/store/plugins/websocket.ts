@@ -8,7 +8,7 @@ export const EVENT_ERROR = 'error';
 export const EVENT_SOCKET_ERROR = 'connect_error';
 export const EVENT_EXCEPTION = 'exception';
 
-export class Adapter {
+export class SocketAdapter {
   private socket: Socket;
   private store: Store;
 
@@ -25,7 +25,7 @@ export class Adapter {
     this.socket.disconnect()
   }
 
-  emitStore(type, payload) {
+  emitStore<T=void>(type, payload): Promise<T> | void {
     return this.store.dispatch(type, payload)
   }
 
@@ -61,5 +61,5 @@ export class Adapter {
 export default (store: Store) => {
   const socket: Socket = io(`${host}:${port}`, options);
 
-  store.socket = new Adapter(socket, store);
+  store.socket = new SocketAdapter(socket, store);
 };

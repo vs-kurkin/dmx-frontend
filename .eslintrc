@@ -1,5 +1,5 @@
 {
-  "parser": "@typescript-eslint/parser",
+  "parser": "vue-eslint-parser",
   "plugins": [
     "@typescript-eslint"
   ],
@@ -17,6 +17,10 @@
     "@vue/eslint-config-prettier/skip-formatting"
   ],
   "parserOptions": {
+    "parser": "@typescript-eslint/parser",
+    "ecmaFeatures": {
+      "jsx": true
+    },
     "ecmaVersion": "latest",
     "sourceType": "module"
   },

@@ -1,11 +1,8 @@
 <script setup lang="ts" type="tsx">
 import DMXChannel from '@/components/DMXChannel.vue'
-import { StoreKey } from '@/store'
-import { State, Store } from '@/store/types'
 import Paginator, { PageState } from 'primevue/paginator'
 import ScrollPanel from 'primevue/scrollpanel'
 import { ref } from 'vue'
-import { useStore } from 'vuex'
 
 export interface Props {
   disabled: boolean
@@ -13,8 +10,6 @@ export interface Props {
 
 
 const props = defineProps<Props>()
-
-const store: Store<State> = useStore<State>(StoreKey)
 
 const total = ref(512)
 const rows = ref(24)

@@ -1,5 +1,5 @@
 <script setup lang="ts" type="tsx">
-import UniverseListener from '@/components/settings/UniverseListener.vue'
+import UniverseListener from '@/components/universe/UniverseListener.vue'
 import { StoreKey } from '@/store'
 import { State, Store } from '@/store/types'
 import Button from 'primevue/button'

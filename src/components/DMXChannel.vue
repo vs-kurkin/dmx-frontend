@@ -4,35 +4,37 @@ import type { State, Store } from '@/store/types'
 import Button from 'primevue/button'
 import InputNumber from 'primevue/inputnumber'
 import Slider from 'primevue/slider'
-import { ref } from 'vue'
+import { Ref, ref } from 'vue'
 import { useStore } from 'vuex'
 
 export interface Props {
   address: number
-  title?: string
+  amount?: number | void
   default?: number
+  disabled?: boolean
   max?: number
   min?: number
-  amount?: number
-  steps?: number[]
-  disabled?: boolean
+  steps?: number[] | void
+  title?: string | void
 }
 
 const emit = defineEmits<{
   update: [channel: number, value: number]
 }>()
 
-const props = withDefaults(defineProps<Props>(), {
-  title: undefined,
-  min: 0,
-  max: 255,
+const props: Props = withDefaults<Props>(defineProps<Props>(), {
+  amount: undefined,
   default: 0,
   disabled: false,
+  max: 255,
+  min: 0,
+  steps: undefined,
+  title: undefined,
 })
 
 const store: Store<State> = useStore<State>(StoreKey)
 
-const channel = ref(store.state.dmx.channel)
+const channel: Ref<number[]> = ref(store.state.dmx.channel)
 
 let currentValue: number = store.state.dmx.channel[props.address]
 
@@ -100,12 +102,14 @@ const resetChannel = () => updateChannel(0)
 }
 
 .channel-number {
-  margin-bottom: 14px;
+  margin-bottom: 1rem;
   width: 2.5rem;
+  min-width: 2.5rem;
   height: 2rem;
   text-align: center;
   padding: 0;
   display: inline;
+  box-shadow: none !important;
 }
 
 .channel-value {

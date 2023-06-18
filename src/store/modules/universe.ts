@@ -46,6 +46,7 @@ export default {
       state.current = name
     },
   },
+
   actions: {
     async setCurrentUniverse(this: Store, { state }: Context<UniverseState>, name: string) {
       if (state.current === name) {

@@ -10,6 +10,7 @@ export type Driver =
   | 'artnet'
   | 'bbdmx'
   | 'sacn'
+
 export type UniverseOptions = {
   name: string
   path: string

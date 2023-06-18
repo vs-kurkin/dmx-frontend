@@ -1,22 +1,23 @@
 <script setup lang="ts" type="tsx">
-import DynamicDialog from 'primevue/dynamicdialog'
+import ToolbarPanel from '@/components/ToolbarPanel.vue'
+import { StoreKey } from '@/store'
+import type { State, Store } from '@/store/types'
 import ConfirmDialog from 'primevue/confirmdialog'
-import { RouterView } from 'vue-router'
-import TopMenu from '@/components/TopMenu.vue'
+import DynamicDialog from 'primevue/dynamicdialog'
+import { useStore } from 'vuex'
+
+const store: Store<State> = useStore<State>(StoreKey)
+const { key } = store.state.settings.theme
+const styleSheetPath = `public/themes/${key}/theme.css`
 </script>
 
 <template>
   <header>
-    <!--suppress JSUnresolvedLibraryURL -->
-    <link
-      href="https://unpkg.com/primeflex@3.3.1/primeflex.css"
-      rel="stylesheet"
-    >
-    <TopMenu />
+    <link href="public/primeflex.css" rel="stylesheet">
+    <link :href="styleSheetPath" rel="stylesheet" id="theme_style">
   </header>
 
-  <RouterView />
-
+  <ToolbarPanel />
   <DynamicDialog />
   <ConfirmDialog />
 </template>

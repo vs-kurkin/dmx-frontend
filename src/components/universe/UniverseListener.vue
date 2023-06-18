@@ -3,6 +3,7 @@ import SocketListener from '@/components/SocketListener.vue'
 import { StoreKey } from '@/store'
 import { EVENT_CONNECT, EVENT_DISCONNECT } from '@/store/plugins/websocket.js'
 import { State, Store } from '@/store/types'
+// noinspection ES6UnusedImports
 import Toast from 'primevue/toast'
 import { useToast } from 'primevue/usetoast'
 import { useStore } from 'vuex'

@@ -1,5 +1,6 @@
+import DashboardPage from '@/views/DashboardPage.vue'
+import DMXControllerPage from '@/views/DMXControllerPage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import DMXDesk from '@/views/DMXControllerPage.vue';
 
 export default createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,7 +8,12 @@ export default createRouter({
     {
       path: '/desk',
       name: 'desk',
-      component: DMXDesk
-    }
-  ]
+      component: DMXControllerPage,
+    },
+    {
+      path: '/',
+      name: 'dashboard',
+      component: DashboardPage,
+    },
+  ],
 })

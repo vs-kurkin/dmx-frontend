@@ -13,8 +13,8 @@
       "dom",
       "ScriptHost"
     ],
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "module": "esnext",
+    "moduleResolution": "node",
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": false,
     "outDir": "dist",
@@ -34,7 +34,7 @@
     "strictBindCallApply": false,
     "strictNullChecks": false,
     "strict": true,
-    "target": "ESNext",
+    "target": "esnext",
     "types": [
       "webpack-env",
       "jest",

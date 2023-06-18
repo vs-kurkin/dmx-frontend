@@ -1,10 +1,11 @@
 <script setup lang="ts" type="tsx">
 import AddUniverseDialog from '@/components/modal/UniverseContent.vue'
 import UniverseHeader from '@/components/modal/UniverseHeader.vue'
-import UniverseSelect from '@/components/settings/UniverseList.vue'
+import UniverseSelect from '@/components/universe/UniverseList.vue'
 import { StoreKey } from '@/store'
 import { State, Store } from '@/store/types'
 import Button from 'primevue/button'
+// noinspection ES6UnusedImports
 import Toast from 'primevue/toast'
 import { useConfirm } from 'primevue/useconfirm'
 import { useDialog } from 'primevue/usedialog'

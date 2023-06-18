@@ -1,6 +1,8 @@
 <script setup lang="ts" type="tsx">
-import UniverseManager from '@/components/settings/UniverseManager.vue'
+import SwitchTheme from '@/components/menu/SwichTheme.vue'
+import UniverseManager from '@/components/universe/UniverseManager.vue'
 import Sidebar from 'primevue/sidebar'
+import Divider from 'primevue/divider'
 import { computed } from 'vue'
 
 export interface Props {
@@ -33,5 +35,9 @@ const visible = computed({
     modal
   >
     <UniverseManager />
+
+    <Divider />
+
+    <SwitchTheme link-id="theme_style" />
   </Sidebar>
 </template>
