@@ -112,7 +112,7 @@ const items: MenuItem[] = [{
 </script>
 
 <template>
-  <div class="mb-2 mt-4">Change theme ({{ store.state.settings.theme.name }}):</div>
+  <h3 class="mb-2 mt-4"><span class="pi pi-palette mr-2" />Theme ({{ store.state.settings.theme.name }}):</h3>
 
   <PanelMenu :model="items" />
 </template>

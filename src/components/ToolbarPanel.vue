@@ -4,38 +4,36 @@ import { PrimeIcons } from 'primevue/api'
 import Button from 'primevue/button'
 import Menubar from 'primevue/menubar'
 import { ref } from 'vue'
+import { RouterView } from 'vue-router'
+
+const showSettings = ref(false)
 
 const items = ref([
-  // {
-  //   label: 'Dashboard',
-  //   icon: PrimeIcons.HOME,
-  //   route: 'desk',
-  // },
-  // {
-  //   label: 'Devices',
-  //   icon: PrimeIcons.SUN,
-  //   route: 'desk',
-  // },
+  {
+    label: 'Dashboard',
+    icon: PrimeIcons.HOME,
+    route: 'dashboard',
+  },
+  {
+    label: 'Devices',
+    icon: PrimeIcons.SUN,
+    route: 'dashboard',
+  },
   {
     label: 'Desk',
     icon: PrimeIcons.SLIDERS_V,
     route: 'desk',
   },
-  // {
-  //   label: 'Playground',
-  //   icon: PrimeIcons.PLAY,
-  //   route: 'desk',
-  // },
+  {
+    label: 'Playground',
+    icon: PrimeIcons.PLAY,
+    route: 'dashboard',
+  },
 ])
-
-const showSettings = ref(false)
 </script>
 
 <template>
-  <Menubar
-    :model="items"
-    class="w-full"
-  >
+  <Menubar :model="items" class="w-full">
     <template #item="{ item }">
       <router-link :to="item.route">
         <Button
@@ -50,18 +48,18 @@ const showSettings = ref(false)
       <Button
         type="button"
         icon="pi pi-cog"
-        aria-haspopup="true"
-        aria-controls="overlay_menu"
         @click="showSettings = true"
-      />
-
-      <SettingsBar
-        ref="settings"
-        v-model:show="showSettings"
-        position="right"
       />
     </template>
   </Menubar>
+
+  <RouterView />
+
+  <SettingsBar
+    ref="settings"
+    v-model:show="showSettings"
+    position="right"
+  />
 </template>
 
 <style scoped></style>

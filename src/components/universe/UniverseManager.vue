@@ -74,9 +74,10 @@ updateUniverses()
 </script>
 
 <template>
-  <div class="mb-2">
-    {{ universes.length ? 'Select current universe:' : 'Add first universe:' }}
-  </div>
+  <h3 class="mb-2">
+    <span class="pi pi-wrench mr-2" />
+    {{ universes.length ? 'Select universe:' : 'Universe:' }}
+  </h3>
 
   <UniverseSelect />
 
