@@ -4,6 +4,7 @@ import UniverseHeader from '@/components/modal/UniverseHeader.vue'
 import UniverseSelect from '@/components/universe/UniverseList.vue'
 import { StoreKey } from '@/store'
 import { State, Store } from '@/store/types'
+import { PrimeIcons } from 'primevue/api'
 import Button from 'primevue/button'
 // noinspection ES6UnusedImports
 import Toast from 'primevue/toast'
@@ -33,9 +34,9 @@ const deleteAllUniverses = () => {
         life: 2000,
       })),
     header: 'Confirm delete',
-    acceptIcon: 'pi pi-check',
-    rejectIcon: 'pi pi-times',
-    icon: 'pi pi-info-circle',
+    acceptIcon: PrimeIcons.CHECK,
+    rejectIcon: PrimeIcons.TIMES,
+    icon: PrimeIcons.CIRCLE,
     acceptClass: 'p-button-danger',
   })
 }
@@ -84,7 +85,7 @@ updateUniverses()
   <div class="flex flex-row flex-nowrap gap-2 mt-3 relative">
     <Button
       v-tooltip.bottom="tooltip('Add universe')"
-      icon="pi pi-plus"
+      :icon=PrimeIcons.PLUS
       class="flex"
       severity="success"
       @click="addUniverse"
@@ -92,7 +93,7 @@ updateUniverses()
 
     <Button
       v-tooltip.bottom="tooltip('Update list')"
-      icon="pi pi-sync"
+      :icon=PrimeIcons.SYNC
       class="flex"
       @click="updateUniverses"
     />
@@ -100,7 +101,7 @@ updateUniverses()
     <Button
       v-tooltip.left="tooltip('Delete all')"
       :disabled="universes.length === 0"
-      icon="pi pi-trash"
+      :icon=PrimeIcons.TRASH
       class="flex right-0 absolute"
       severity="danger"
       @click="deleteAllUniverses"

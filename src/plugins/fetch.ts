@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 import { baseHost, basePort } from '@/configs/fetch'
 
 export type Url = URL | string

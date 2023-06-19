@@ -113,6 +113,6 @@ export default {
 
       this.commit('list', [])
       this.commit('current', null)
-    }
+    },
   },
 }

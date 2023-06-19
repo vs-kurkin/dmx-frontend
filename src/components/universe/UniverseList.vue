@@ -2,6 +2,7 @@
 import UniverseListener from '@/components/universe/UniverseListener.vue'
 import { StoreKey } from '@/store'
 import { State, Store } from '@/store/types'
+import { PrimeIcons } from 'primevue/api'
 import Button from 'primevue/button'
 import Listbox, { ListboxChangeEvent } from 'primevue/listbox'
 import { useConfirm } from 'primevue/useconfirm'
@@ -22,14 +23,14 @@ const deleteUniverse = async (event: PointerEvent, name: string) => {
     message: 'Do you want to delete this universe?',
     accept: () => store.dispatch('deleteUniverse', name),
     header: `Delete ${name}`,
-    acceptIcon: 'pi pi-check',
-    rejectIcon: 'pi pi-times',
-    icon: 'pi pi-info-circle',
+    acceptIcon: PrimeIcons.CHECK,
+    rejectIcon: PrimeIcons.TIMES,
+    icon: PrimeIcons.INFO_CIRCLE,
     acceptClass: 'p-button-danger',
   })
 }
 
-const changeUniverse = ({value}: ListboxChangeEvent) => {
+const changeUniverse = ({ value }: ListboxChangeEvent) => {
   store.dispatch('setCurrentUniverse', value)
 
   if (value == null) {
@@ -55,7 +56,7 @@ const changeUniverse = ({value}: ListboxChangeEvent) => {
       <div class="flex justify-content-between align-items-center">
         {{ option }}
         <Button
-          icon="pi pi-times"
+          :icon=PrimeIcons.TIMES
           severity="danger"
           size="small"
           class="flex ml-2 w-1 h-2rem"

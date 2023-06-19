@@ -19,8 +19,8 @@ export default {
   },
 
   mutations: {
-    channel(state: DMXState, { channel, value }: ChannelPayload) {
-      state.channel[channel] = value
+    channel(state: DMXState, payload: ChannelPayload) {
+      state.channel[payload.channel] = payload.value
     },
 
     channels(state: DMXState, values: BulkChannelPayload) {
@@ -44,7 +44,7 @@ export default {
 
     resetAllChannelValues(this: Store) {
       this.commit('channels', new Array(512).fill(0))
-    }
+    },
   },
 }
 

@@ -10,7 +10,7 @@ export const storage = {
     return JSON.parse(localStorage.getItem(key))
   },
 
-  push<T>(key: string, value: T): void {
+  push<T>(key: string, value: T) {
     localStorage.setItem(key, JSON.stringify(value))
   },
 }

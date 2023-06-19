@@ -8,12 +8,12 @@ import { useStore } from 'vuex'
 
 const store: Store<State> = useStore<State>(StoreKey)
 const { key } = store.state.settings.theme
-const styleSheetPath = `public/themes/${key}/theme.css`
+const styleSheetPath = `themes/${key}/theme.css`
 </script>
 
 <template>
   <header>
-    <link href="public/primeflex.css" rel="stylesheet">
+    <link href="primeflex.css" rel="stylesheet">
     <link :href="styleSheetPath" rel="stylesheet" id="theme_style">
   </header>
 

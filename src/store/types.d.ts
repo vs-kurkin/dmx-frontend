@@ -2,8 +2,8 @@ import type { DMXState } from '@/store/modules/dmx'
 import type { SettingsState } from '@/store/modules/settings'
 import type { StatusState } from '@/store/modules/status'
 import type { UniverseState } from '@/store/modules/universe'
-import type { SocketAdapter } from '@/store/plugins/websocket'
 import type { StorageFacade } from '@/store/plugins/localStorage'
+import type { SocketAdapter } from '@/store/plugins/websocket'
 import type { ActionContext, Store as VuexStore } from 'vuex'
 
 export interface State {

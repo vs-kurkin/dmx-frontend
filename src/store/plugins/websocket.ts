@@ -1,20 +1,20 @@
-import { io, Socket } from 'socket.io-client';
-import { host, port, options } from '@/configs/websocket';
-import type { Store } from '@/store/types';
+import { host, options, port } from '@/configs/websocket'
+import type { Store } from '@/store/types'
+import { io, Socket } from 'socket.io-client'
 
-export const EVENT_CONNECT = 'connect';
-export const EVENT_DISCONNECT = 'disconnect';
-export const EVENT_ERROR = 'error';
-export const EVENT_SOCKET_ERROR = 'connect_error';
-export const EVENT_EXCEPTION = 'exception';
+export const EVENT_CONNECT = 'connect'
+export const EVENT_DISCONNECT = 'disconnect'
+export const EVENT_ERROR = 'error'
+export const EVENT_SOCKET_ERROR = 'connect_error'
+export const EVENT_EXCEPTION = 'exception'
 
 export class SocketAdapter {
-  private socket: Socket;
-  private store: Store;
+  private socket: Socket
+  private store: Store
 
   constructor(socket, store) {
-    this.socket = socket;
-    this.store = store;
+    this.socket = socket
+    this.store = store
   }
 
   connect() {
@@ -25,7 +25,7 @@ export class SocketAdapter {
     this.socket.disconnect()
   }
 
-  emitStore<T=void>(type, payload): Promise<T> | void {
+  emitStore<T = void>(type, payload): Promise<T> | void {
     return this.store.dispatch(type, payload)
   }
 
@@ -34,32 +34,32 @@ export class SocketAdapter {
   }
 
   onSocket(event, listener) {
-    return this.socket.on(event, listener);
+    return this.socket.on(event, listener)
   }
 
   onStore(type, listener) {
-    const check = value => value === type;
-    const handler = ({ type, payload }) => check(type) && listener(payload);
+    const check = value => value === type
+    const handler = mutation => check(mutation.type) && listener(mutation.payload)
 
-    return this.store.subscribe(handler);
+    return this.store.subscribe(handler)
   }
 
   pipeSocket(event, type = event, listener = this.emitStore) {
-    const handler = payload => listener(type, payload);
+    const handler = payload => listener(type, payload)
 
-    return this.onSocket(event, handler);
+    return this.onSocket(event, handler)
   }
 
   pipeStore(type, event = type, listener = this.emitSocket) {
-    const handler = payload => listener(event, payload);
+    const handler = payload => listener(event, payload)
 
-    return this.onStore(type, handler);
+    return this.onStore(type, handler)
   }
 }
 
 
 export default (store: Store) => {
-  const socket: Socket = io(`${host}:${port}`, options);
+  const socket: Socket = io(`${host}:${port}`, options)
 
-  store.socket = new SocketAdapter(socket, store);
+  store.socket = new SocketAdapter(socket, store)
 };

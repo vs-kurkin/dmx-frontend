@@ -2,6 +2,7 @@
 import { getDevices } from '@/api/serial'
 import { StoreKey } from '@/store'
 import type { State, Store } from '@/store/types'
+import { PrimeIcons } from 'primevue/api'
 import Button from 'primevue/button'
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions'
 import Listbox from 'primevue/listbox'
@@ -74,6 +75,7 @@ const errorHandler = (summary: string, detail: string) => toast.add({
       class="flex"
       list-style="height:200px"
     />
+
     <Listbox
       v-model="driver"
       :options="drivers"
@@ -87,24 +89,24 @@ const errorHandler = (summary: string, detail: string) => toast.add({
   <div class="flex gap-2 mt-4 relative">
     <Button
       label="Cancel"
-      icon="pi pi-times"
+      :icon=PrimeIcons.TIMES
       severity="secondary"
-      @click="dialogRef.close"
+      @click=dialogRef.close
     />
 
     <Button
       label="Refresh"
-      icon="pi pi-refresh"
-      @click="refreshData"
+      :icon=PrimeIcons.REFRESH
+      @click=refreshData
     />
 
     <Button
       label="Add"
-      icon="pi pi-check"
+      :icon=PrimeIcons.CHECK
       severity="success"
       class="absolute right-0"
       :disabled="!device || !driver"
-      @click="addUniverse"
+      @click=addUniverse
     />
   </div>
 </template>
