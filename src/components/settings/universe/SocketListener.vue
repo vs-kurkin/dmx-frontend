@@ -1,8 +1,7 @@
 <script setup lang="ts" type="tsx">
-import SocketListener from '@/components/SocketListener.vue'
-import { StoreKey } from '@/store'
+import SocketProvider from '@/components/common/SocketProvider.vue'
+import { State, Store, StoreKey } from '@/store'
 import { EVENT_CONNECT, EVENT_DISCONNECT } from '@/store/plugins/websocket.js'
-import { State, Store } from '@/store/types'
 // noinspection ES6UnusedImports
 import Toast from 'primevue/toast'
 import { useToast } from 'primevue/usetoast'
@@ -41,13 +40,11 @@ const onError = error => toast.add({
 </script>
 
 <template>
-  <SocketListener
+  <SocketProvider
     listen-type="current"
     @connect="onConnect"
     @disconnect="onDisconnect"
     @error="onError"
     @exception="onError"
   />
-
-  <Toast position="bottom-left" />
 </template>

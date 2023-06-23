@@ -4,11 +4,11 @@ import modules from './modules'
 import plugins from './plugins'
 import type { State, Store } from './types'
 
-const store: Store<State> = createStore<State>({
+export default createStore<State>({
   plugins,
   modules,
 })
 
-export default store
-
 export const StoreKey: InjectionKey<Store> = Symbol()
+
+export type { State, Store }

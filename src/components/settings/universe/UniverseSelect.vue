@@ -1,7 +1,6 @@
 <script setup lang="ts" type="tsx">
-import UniverseListener from '@/components/universe/UniverseListener.vue'
-import { StoreKey } from '@/store'
-import { State, Store } from '@/store/types'
+import SocketListener from '@/components/settings/universe/SocketListener.vue'
+import { State, Store, StoreKey } from '@/store'
 import { PrimeIcons } from 'primevue/api'
 import Button from 'primevue/button'
 import Listbox, { ListboxChangeEvent } from 'primevue/listbox'
@@ -42,7 +41,7 @@ const changeUniverse = ({ value }: ListboxChangeEvent) => {
 </script>
 
 <template>
-  <UniverseListener />
+  <SocketListener />
 
   <Listbox
     v-model="universe"

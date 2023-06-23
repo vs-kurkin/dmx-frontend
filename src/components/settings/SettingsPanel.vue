@@ -1,15 +1,16 @@
 <script setup lang="ts" type="tsx">
-import SwitchTheme from '@/components/menu/SwichTheme.vue'
-import UniverseManager from '@/components/universe/UniverseManager.vue'
-import Sidebar from 'primevue/sidebar'
+import ConfigUI from '@/components/settings/ConfigUI.vue'
+import SwitchTheme from '@/components/settings/SwichTheme.vue'
+import UniverseManager from '@/components/settings/universe/UniverseManager.vue'
 import Divider from 'primevue/divider'
+import Sidebar from 'primevue/sidebar'
 import { computed } from 'vue'
 
 export interface Props {
   show: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props: Props = withDefaults<Props>(defineProps<Props>(), {
   show: false,
 })
 
@@ -35,9 +36,9 @@ const visible = computed({
     modal
   >
     <UniverseManager />
-
     <Divider />
-
-    <SwitchTheme link-id="theme_style" />
+    <SwitchTheme />
+    <Divider />
+    <ConfigUI />
   </Sidebar>
 </template>

@@ -1,6 +1,5 @@
 <script setup lang="ts" type="tsx">
-import { StoreKey } from '@/store'
-import type { State, Store } from '@/store/types'
+import { State, Store, StoreKey } from '@/store'
 import Button from 'primevue/button'
 import InputNumber from 'primevue/inputnumber'
 import Slider from 'primevue/slider'
@@ -42,6 +41,7 @@ const updateChannel = async (value: number) => {
   if (currentValue === value) {
     return
   }
+
   await store.dispatch('updateChannel', {
     name: store.state.universe.current,
     channel: props.address,
@@ -97,7 +97,7 @@ const resetChannel = () => updateChannel(0)
 
 <style scoped>
 .channel-wrapper {
-  width: 45px;
+  width: 2.6rem;
   text-align: center;
 }
 
@@ -113,7 +113,7 @@ const resetChannel = () => updateChannel(0)
 }
 
 .channel-value {
-  margin-top: 28px;
+  margin-top: 1.7rem;
 }
 
 :deep(.p-slider):hover {
@@ -124,8 +124,8 @@ const resetChannel = () => updateChannel(0)
   width: 2.7rem;
   height: 2rem;
   left: 0 !important;
-  margin-left: -18px !important;
-  margin-bottom: -24px !important;
+  margin-left: -1.15rem !important;
+  margin-bottom: -1.5rem !important;
   border-radius: 0.4em;
   border-width: 1px;
 }

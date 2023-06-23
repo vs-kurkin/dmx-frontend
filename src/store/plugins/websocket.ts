@@ -12,7 +12,7 @@ export class SocketAdapter {
   private socket: Socket
   private store: Store
 
-  constructor(socket, store) {
+  constructor(socket: Socket, store: Store) {
     this.socket = socket
     this.store = store
   }

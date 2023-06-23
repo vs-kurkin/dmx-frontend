@@ -1,5 +1,5 @@
 <script setup lang="ts" type="tsx">
-import DMXChannel from '@/components/DMXChannel.vue'
+import DMXChannel from '@/components/dmx/DMXChannel.vue'
 import Paginator, { PageState } from 'primevue/paginator'
 import ScrollPanel from 'primevue/scrollpanel'
 import { ref } from 'vue'

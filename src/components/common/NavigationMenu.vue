@@ -1,39 +1,40 @@
 <script setup lang="ts" type="tsx">
-import SettingsBar from '@/components/SettingsBar.vue'
 import { PrimeIcons } from 'primevue/api'
 import Button from 'primevue/button'
 import Menubar from 'primevue/menubar'
-import { ref } from 'vue'
-import { RouterView } from 'vue-router'
+import { MenuItem } from 'primevue/menuitem'
+import { Ref, ref } from 'vue'
 
-const showSettings = ref(false)
-
-const items = ref([
+const items: Ref<MenuItem[]> = ref([
   {
     label: 'Dashboard',
     icon: PrimeIcons.HOME,
-    route: 'dashboard',
+    route: { name: 'dashboard' },
   },
   {
     label: 'Devices',
     icon: PrimeIcons.SUN,
-    route: 'dashboard',
+    route: { name: 'devices' },
   },
   {
-    label: 'Desk',
+    label: 'Controller',
     icon: PrimeIcons.SLIDERS_V,
-    route: 'desk',
+    route: { name: 'controller' },
   },
   {
     label: 'Playground',
     icon: PrimeIcons.PLAY,
-    route: 'dashboard',
+    route: { name: 'playground' },
   },
 ])
 </script>
 
 <template>
   <Menubar :model="items" class="w-full">
+    <template #start>
+      <slot name="start" />
+    </template>
+
     <template #item="{ item }">
       <router-link :to="item.route">
         <Button
@@ -45,21 +46,7 @@ const items = ref([
     </template>
 
     <template #end>
-      <Button
-        type="button"
-        icon="pi pi-cog"
-        @click="showSettings = true"
-      />
+      <slot name="end" />
     </template>
   </Menubar>
-
-  <RouterView />
-
-  <SettingsBar
-    ref="settings"
-    v-model:show="showSettings"
-    position="right"
-  />
 </template>
-
-<style scoped></style>

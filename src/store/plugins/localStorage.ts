@@ -13,6 +13,10 @@ export const storage = {
   push<T>(key: string, value: T) {
     localStorage.setItem(key, JSON.stringify(value))
   },
+
+  clear(key: string) {
+    localStorage.removeItem(key)
+  },
 }
 
 export default (store: Store) => {

@@ -1,0 +1,28 @@
+{
+  "Bootstrap": {
+    "Light Blue": "bootstrap4-light-blue",
+    "Light Purple": "bootstrap4-light-purple",
+    "Dark Blue": "bootstrap4-dark-blue",
+    "Dark Purple": "bootstrap4-dark-purple"
+  },
+  "Material": {
+    "Light Purple": "mdc-light-deeppurple",
+    "Light Indigo": "mdc-light-indigo",
+    "Dark Purple": "mdc-dark-deeppurple",
+    "Dark Indigo": "mdc-dark-indigo"
+  },
+  "Soho": {
+    "Light": "soho-light",
+    "Dark": "soho-dark"
+  },
+  "Viva": {
+    "Light": "viva-light",
+    "Dark": "viva-dark"
+  },
+  "Misc": {
+    "Fluent UI": "fluent-light",
+    "Tailwind": "tailwind-light",
+    "Mira": "mira",
+    "Nano": "nano"
+  }
+}

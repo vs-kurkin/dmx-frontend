@@ -1,7 +1,6 @@
 <script setup lang="ts" type="tsx">
 import { getDevices } from '@/api/serial'
-import { StoreKey } from '@/store'
-import type { State, Store } from '@/store/types'
+import { State, Store, StoreKey } from '@/store'
 import { PrimeIcons } from 'primevue/api'
 import Button from 'primevue/button'
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions'
@@ -31,8 +30,8 @@ const addUniverse = async () => {
     dialogRef.value.close()
 
     successHandler('Success to add device')
-  } catch (error) {
-    errorHandler('Failed to add device', (error as Error).message)
+  } catch (error: Error) {
+    errorHandler('Failed to add device', error.message)
   }
 }
 
@@ -43,8 +42,8 @@ const refreshData = async () => {
     devices.value = await getDevices()
 
     await store.dispatch('updateDrivers')
-  } catch (error) {
-    errorHandler('Failed to refresh data', (error as Error).message)
+  } catch (error: Error) {
+    errorHandler('Failed to refresh data', error.message)
   }
 }
 
@@ -72,8 +71,7 @@ const errorHandler = (summary: string, detail: string) => toast.add({
       option-label="friendlyName"
       data-key="serialNumber"
       empty-message="No devices available"
-      class="flex"
-      list-style="height:200px"
+      list-style="height: 230px"
     />
 
     <Listbox
@@ -81,8 +79,7 @@ const errorHandler = (summary: string, detail: string) => toast.add({
       :options="drivers"
       :disabled="device == null"
       empty-message="No supported drivers"
-      class="flex"
-      list-style="height:200px"
+      list-style="height: 230px"
     />
   </div>
 

@@ -1,9 +1,8 @@
 <script setup lang="ts" type="tsx">
-import AddUniverseDialog from '@/components/modal/UniverseContent.vue'
-import UniverseHeader from '@/components/modal/UniverseHeader.vue'
-import UniverseSelect from '@/components/universe/UniverseList.vue'
-import { StoreKey } from '@/store'
-import { State, Store } from '@/store/types'
+import ModalBody from '@/components/settings/universe/modal/ModalBody.vue'
+import ModalHeader from '@/components/settings/universe/modal/ModalHeader.vue'
+import UniverseSelect from '@/components/settings/universe/UniverseSelect.vue'
+import { State, Store, StoreKey } from '@/store'
 import { PrimeIcons } from 'primevue/api'
 import Button from 'primevue/button'
 // noinspection ES6UnusedImports
@@ -42,7 +41,7 @@ const deleteAllUniverses = () => {
 }
 
 const addUniverse = async () => {
-  dialog.open(AddUniverseDialog, {
+  dialog.open(ModalBody, {
     props: {
       closable: false,
       draggable: false,
@@ -51,7 +50,7 @@ const addUniverse = async () => {
       closeOnEscape: true,
     },
     templates: {
-      header: markRaw(UniverseHeader),
+      header: markRaw(ModalHeader),
     },
   })
 }
@@ -75,14 +74,11 @@ updateUniverses()
 </script>
 
 <template>
-  <h3 class="mb-2">
-    <span class="pi pi-wrench mr-2" />
-    {{ universes.length ? 'Select universe:' : 'Universe:' }}
-  </h3>
+  <h3 class="mt-0">{{ universes.length ? 'Select universe:' : 'Universe:' }}</h3>
 
   <UniverseSelect />
 
-  <div class="flex flex-row flex-nowrap gap-2 mt-3 relative">
+  <div class="flex flex-nowrap gap-2 mt-2 relative">
     <Button
       v-tooltip.bottom="tooltip('Add universe')"
       :icon=PrimeIcons.PLUS
@@ -107,6 +103,4 @@ updateUniverses()
       @click="deleteAllUniverses"
     />
   </div>
-
-  <Toast position="bottom-left" />
 </template>

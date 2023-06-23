@@ -1,5 +1,5 @@
 <script setup lang="ts" type="tsx">
-import { StoreKey } from '@/store'
+import { State, Store, StoreKey } from '@/store'
 import {
   EVENT_CONNECT,
   EVENT_DISCONNECT,
@@ -7,7 +7,6 @@ import {
   EVENT_EXCEPTION,
   EVENT_SOCKET_ERROR,
 } from '@/store/plugins/websocket'
-import type { State, Store } from '@/store/types'
 import { useStore } from 'vuex'
 
 export interface Props {
@@ -25,7 +24,7 @@ const { socket }: Store = useStore<State>(StoreKey)
 
 const props = defineProps<Props>()
 
-socket.onStore(props.listenType, name => {
+socket.onStore(props.listenType, (name: string) => {
   if (name) {
     socket.connect()
   } else {
