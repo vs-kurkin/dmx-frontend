@@ -1,12 +1,12 @@
 <script setup lang="ts" type="tsx">
 import { getDevices } from '@/api/serial'
-import { State, Store, StoreKey } from '@/store'
+import { type State, type Store, StoreKey } from '@/store'
 import { PrimeIcons } from 'primevue/api'
 import Button from 'primevue/button'
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions'
 import Listbox from 'primevue/listbox'
 import { useToast } from 'primevue/usetoast'
-import { inject, onMounted, Ref, ref } from 'vue'
+import { inject, onMounted, type Ref, ref } from 'vue'
 import { useStore } from 'vuex'
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
@@ -30,8 +30,8 @@ const addUniverse = async () => {
     dialogRef.value.close()
 
     successHandler('Success to add device')
-  } catch (error: Error) {
-    errorHandler('Failed to add device', error.message)
+  } catch (error) {
+    errorHandler('Failed to add device', (error as Error).message)
   }
 }
 
@@ -42,8 +42,8 @@ const refreshData = async () => {
     devices.value = await getDevices()
 
     await store.dispatch('updateDrivers')
-  } catch (error: Error) {
-    errorHandler('Failed to refresh data', error.message)
+  } catch (error) {
+    errorHandler('Failed to refresh data', (error as Error).message)
   }
 }
 

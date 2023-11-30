@@ -2,8 +2,8 @@
 import { PrimeIcons } from 'primevue/api'
 import Button from 'primevue/button'
 import Menubar from 'primevue/menubar'
-import { MenuItem } from 'primevue/menuitem'
-import { Ref, ref } from 'vue'
+import { type Ref, ref } from 'vue'
+import type { MenuItem } from 'primevue/menuitem/MenuItem.d.ts'
 
 const items: Ref<MenuItem[]> = ref([
   {
@@ -37,11 +37,7 @@ const items: Ref<MenuItem[]> = ref([
 
     <template #item="{ item }">
       <router-link :to="item.route">
-        <Button
-          text
-          :icon="item.icon"
-          :label="item.label ?? ''"
-        />
+        <Button text :icon="item.icon" :label="String(item.label)" />
       </router-link>
     </template>
 

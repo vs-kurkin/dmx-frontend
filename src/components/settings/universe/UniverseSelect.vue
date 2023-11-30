@@ -1,9 +1,9 @@
 <script setup lang="ts" type="tsx">
 import SocketListener from '@/components/settings/universe/SocketListener.vue'
-import { State, Store, StoreKey } from '@/store'
+import { type State, type Store, StoreKey } from '@/store'
 import { PrimeIcons } from 'primevue/api'
 import Button from 'primevue/button'
-import Listbox, { ListboxChangeEvent } from 'primevue/listbox'
+import Listbox, { type ListboxChangeEvent } from 'primevue/listbox'
 import { useConfirm } from 'primevue/useconfirm'
 import { ref } from 'vue'
 import { useStore } from 'vuex'
@@ -15,7 +15,7 @@ const universe = ref<string>(store.state.universe.current)
 const universes = ref<string[]>(store.state.universe.list)
 
 
-const deleteUniverse = async (event: PointerEvent, name: string) => {
+const deleteUniverse = async (event: MouseEvent | PointerEvent, name: string) => {
   event.stopPropagation()
 
   confirm.require({

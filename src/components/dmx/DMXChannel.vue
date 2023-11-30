@@ -1,13 +1,13 @@
 <script setup lang="ts" type="tsx">
-import { State, Store, StoreKey } from '@/store'
+import { type State, type Store, StoreKey } from '@/store'
 import Button from 'primevue/button'
 import InputNumber from 'primevue/inputnumber'
 import Slider from 'primevue/slider'
-import { Ref, ref } from 'vue'
+import { type Ref, ref } from 'vue'
 import { useStore } from 'vuex'
 
 export interface Props {
-  address: number
+  address?: number
   amount?: number | void
   default?: number
   disabled?: boolean
@@ -21,14 +21,11 @@ const emit = defineEmits<{
   update: [channel: number, value: number]
 }>()
 
-const props: Props = withDefaults<Props>(defineProps<Props>(), {
-  amount: undefined,
+const props: Props = withDefaults(defineProps<Props>(), {
   default: 0,
   disabled: false,
   max: 255,
   min: 0,
-  steps: undefined,
-  title: undefined,
 })
 
 const store: Store<State> = useStore<State>(StoreKey)

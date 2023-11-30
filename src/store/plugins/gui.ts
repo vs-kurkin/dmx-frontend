@@ -2,10 +2,16 @@ import type { State, Store } from '@/store'
 import type { InputStyle, RippleEffect, ScaleValue, SettingsState, ThemePayload } from '@/store/modules/settings'
 import { watch } from 'vue'
 
-let primeVue, linkId, previous
+// eslint-disable-next-line
+type Instance = any;
+type LinkID = string;
+
+let primeVue: Instance
+let linkId: LinkID
+let previous: SettingsState
 
 const setScale = (scale: ScaleValue) => {
-  document.documentElement.style.fontSize = 1 + (scale / 10) + 'rem'
+  document.documentElement.style.fontSize = 1 + scale / 10 + 'rem'
 }
 
 const setRipple = (enabled: RippleEffect) => {
@@ -20,12 +26,15 @@ const setTheme = (theme: ThemePayload, previous = theme) => {
   primeVue.changeTheme(previous.key, theme.key, linkId)
 }
 
-export const setupPrimeVue = (instance, id: string) => {
+export const setupPrimeVue = (instance: Instance, id: LinkID) => {
   primeVue = instance
   linkId = id
 }
 
-export const applySettings = (settings: SettingsState, previous?: SettingsState) => {
+export const applySettings = (
+  settings: SettingsState,
+  previous?: SettingsState,
+) => {
   previous && setTheme(settings.theme, previous.theme)
 
   setScale(settings.scale)

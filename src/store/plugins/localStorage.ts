@@ -1,16 +1,16 @@
 import type { Store } from '@/store/types'
 
 export interface StorageFacade {
-  pull: <T>(key: string) => T
-  push: <T>(key: string, value: T) => void
+  pull: <T = unknown>(key: string) => T
+  push: <T = unknown>(key: string, value: T) => void
 }
 
 export const storage = {
-  pull<T>(key: string): T {
+  pull<T = unknown>(key: string): T {
     return JSON.parse(localStorage.getItem(key))
   },
 
-  push<T>(key: string, value: T) {
+  push<T = unknown>(key: string, value: T) {
     localStorage.setItem(key, JSON.stringify(value))
   },
 

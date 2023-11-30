@@ -7,7 +7,7 @@ export type Options = RequestInit
 export type Result<T> = Promise<T | void>
 
 export type Sender = (url: Url, options?: Options) => Promise<Response>
-export type Handler = <T>(response: Response) => Result<T>
+export type Handler = <T>(response: Response) => Result<T> | void
 
 const BASE_URL = `${baseHost}:${basePort}`
 
@@ -17,13 +17,8 @@ export const errorHandler: Handler = async <T>(response: Response): Result<T> =>
   }
 }
 
-export const jsonParse: Handler = async <T>(response: Response): Result<T> => {
-  if (response.ok) {
-    return await response.json() as T
-  }
-
-  await errorHandler<T>(response)
-}
+export const jsonParse: Handler = async <T>(response: Response): Result<T> =>
+  response.ok ? await response.json() as T : await errorHandler<T>(response)
 
 
 export const sender: Sender = async (url: Url = '', options?: RequestInit): Promise<Response> =>

@@ -1,7 +1,7 @@
 <script setup lang="ts" type="tsx">
 import NavigationMenu from '@/components/common/NavigationMenu.vue'
 import SettingsBar from '@/components/settings/SettingsPanel.vue'
-import { State, Store, StoreKey } from '@/store'
+import { type State, type Store, StoreKey } from '@/store'
 import { applySettings, setupPrimeVue } from '@/store/plugins/gui'
 import { PrimeIcons } from 'primevue/api'
 import Button from 'primevue/button'

@@ -1,4 +1,4 @@
-import HelloWorld from '@/components/DMXChannel.vue'
+import HelloWorld from '@/components/dmx/DMXChannel.vue'
 import { shallowMount } from '@vue/test-utils'
 
 describe('HelloWorld.vue', () => {

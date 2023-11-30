@@ -2,15 +2,15 @@ import { getValues } from '@/api/dmx'
 import type { Context, Store } from '@/store/types'
 
 export type ChannelPayload = {
-  name: string,
-  channel: number,
-  value: number,
-}
+  name: string;
+  channel: number;
+  value: number;
+};
 
-export type BulkChannelPayload = number[]
+export type BulkChannelPayload = number[];
 
 export interface DMXState {
-  channel: number[]
+  channel: number[];
 }
 
 export default {
@@ -30,13 +30,13 @@ export default {
   },
 
   actions: {
-    updateChannel(this: Store, ctx: Context, payload: ChannelPayload) {
-      this.socket.emitSocket('update', payload)
+    async updateChannel(this: Store, _ctx: Context, payload: ChannelPayload) {
+      await this.socket.emitSocket('update', payload)
 
       this.commit('channel', payload)
     },
 
-    async getAllChannelValues(this: Store, ctx: Context, name: string) {
+    async getAllChannelValues(this: Store, _ctx: Context, name: string) {
       const values = await getValues(name)
 
       this.commit('channels', values)

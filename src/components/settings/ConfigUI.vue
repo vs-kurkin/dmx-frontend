@@ -1,11 +1,11 @@
 <script setup lang="ts" type="tsx">
-import { State, Store, StoreKey } from '@/store'
+import { type State, type Store, StoreKey } from '@/store'
 import type { RippleEffect, ScaleValue } from '@/store/modules/settings'
 import { DEFAULT_INPUT_STYLE, SCALE_MAX, SCALE_MIN } from '@/store/modules/settings'
 import { PrimeIcons } from 'primevue/api'
 import Button from 'primevue/button'
 import ToggleButton from 'primevue/togglebutton'
-import { Ref, ref, watch } from 'vue'
+import { type Ref, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 
 

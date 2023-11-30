@@ -7,46 +7,48 @@ import type { SocketAdapter } from '@/store/plugins/websocket'
 import type { ActionContext, Store as VuexStore } from 'vuex'
 
 export interface State {
-  universe: UniverseState
-  connected: boolean
-  error: string
-  dmx: DMXState
-  status: StatusState
-  settings: SettingsState
+  connected: boolean;
+  dmx: DMXState;
+  error: string;
+  settings: SettingsState;
+  status: StatusState;
+  universe: UniverseState;
 }
 
 export type Store<S = Store> = VuexStore<S> & {
-  socket?: SocketAdapter
-  storage?: StorageFacade
-}
+  socket?: SocketAdapter;
+  storage?: StorageFacade;
+};
 
-export type Context<S = State, R = State> = ActionContext<S, R>
+export type Context<S = State, R = State> = ActionContext<S, R>;
 
 export interface ChannelInterface {
-  title?: string;
-  value: number;
-  type?: string;
-  default?: number;
-  min?: number;
-  max?: number;
   amount?: number;
+  default?: number;
+  max?: number;
+  min?: number;
   steps?: number[];
+  title?: string;
+  type?: string;
+  value: number;
 }
 
+// noinspection JSUnusedGlobalSymbols
 export interface DeviceInterface {
-  vendor: string
-  model: string
-  mode: string
-  channels: ChannelInterface[]
+  channels: ChannelInterface[];
+  mode: string;
+  model: string;
+  vendor: string;
 }
 
+// noinspection JSUnusedGlobalSymbols
 export interface DriverOptions {
-  path: string
-  baudRate?: number
-  dataBits?: number
-  stopBits?: number
-  universe?: number
-  interval?: number
-  host?: string
-  port?: string
+  baudRate?: number;
+  dataBits?: number;
+  host?: string;
+  interval?: number;
+  path: string;
+  port?: string;
+  stopBits?: number;
+  universe?: number;
 }

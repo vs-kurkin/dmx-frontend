@@ -10,7 +10,7 @@ export interface Props {
   show: boolean
 }
 
-const props: Props = withDefaults<Props>(defineProps<Props>(), {
+const props: Props = withDefaults(defineProps<Props>(), {
   show: false,
 })
 

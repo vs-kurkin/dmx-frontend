@@ -10,16 +10,16 @@ export const DEFAULT_PORT = 80
 export default defineConfig({
 
   plugins: [vue(), vueJsx()],
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
   server: {
     host: process.env.VITE_HOST || DEFAULT_HOST,
     port: Number(process.env.VITE_PORT) || DEFAULT_PORT,
     cors: {
       origin: process.env.NODE_ENV === 'production' ? false : ['*'],
-    },
-  },
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
 })

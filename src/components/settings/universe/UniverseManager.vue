@@ -2,11 +2,10 @@
 import ModalBody from '@/components/settings/universe/modal/ModalBody.vue'
 import ModalHeader from '@/components/settings/universe/modal/ModalHeader.vue'
 import UniverseSelect from '@/components/settings/universe/UniverseSelect.vue'
-import { State, Store, StoreKey } from '@/store'
+import { type State, type Store, StoreKey } from '@/store'
 import { PrimeIcons } from 'primevue/api'
 import Button from 'primevue/button'
-// noinspection ES6UnusedImports
-import Toast from 'primevue/toast'
+import 'primevue/toast'
 import { useConfirm } from 'primevue/useconfirm'
 import { useDialog } from 'primevue/usedialog'
 import { useToast } from 'primevue/usetoast'

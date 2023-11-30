@@ -1,20 +1,20 @@
 import { storage } from '@/store/plugins/localStorage'
 import type { Context, Store } from '@/store/types'
 
-export type ScaleValue = -5 | -4 | -3 | -2 | -1 | 0 | 1 | 2 | 3 | 4 | 5
-export type InputStyle = 'filled' | 'outlined'
-export type RippleEffect = boolean
+export type ScaleValue = -5 | -4 | -3 | -2 | -1 | 0 | 1 | 2 | 3 | 4 | 5;
+export type InputStyle = 'filled' | 'outlined';
+export type RippleEffect = boolean;
 
 export interface SettingsState {
-  theme: ThemePayload,
-  scale: ScaleValue,
-  inputStyle: InputStyle,
-  rippleEffect: RippleEffect
+  theme: ThemePayload;
+  scale: ScaleValue;
+  inputStyle: InputStyle;
+  rippleEffect: RippleEffect;
 }
 
 export interface ThemePayload {
-  key: string
-  name: string
+  key: string;
+  name: string;
 }
 
 export const STORAGE_KEY_THEME = 'settings.theme'
@@ -36,10 +36,13 @@ export const DEFAULT_RIPPLE_EFFECT = true
 
 export default {
   state: {
-    theme: storage.pull<ThemePayload>(STORAGE_KEY_THEME) ?? DEFAULT_THEME_PAYLOAD,
+    theme:
+      storage.pull<ThemePayload>(STORAGE_KEY_THEME) ?? DEFAULT_THEME_PAYLOAD,
     scale: storage.pull<ScaleValue>(STORAGE_KEY_SCALE) ?? DEFAULT_SCALE,
-    inputStyle: storage.pull<InputStyle>(STORAGE_KEY_INPUT_STYLE) ?? DEFAULT_INPUT_STYLE,
-    rippleEffect: storage.pull<RippleEffect>(STORAGE_KEY_RIPPLE) ?? DEFAULT_RIPPLE_EFFECT,
+    inputStyle:
+      storage.pull<InputStyle>(STORAGE_KEY_INPUT_STYLE) ?? DEFAULT_INPUT_STYLE,
+    rippleEffect:
+      storage.pull<RippleEffect>(STORAGE_KEY_RIPPLE) ?? DEFAULT_RIPPLE_EFFECT,
   },
 
   mutations: {
@@ -69,19 +72,19 @@ export default {
   },
 
   actions: {
-    setTheme(this: Store, ctx: Context, payload: ThemePayload) {
+    setTheme(this: Store, _ctx: Context, payload: ThemePayload) {
       this.commit('theme', payload)
     },
 
-    setScale(this: Store, ctx: Context, scale: ScaleValue) {
+    setScale(this: Store, _ctx: Context, scale: ScaleValue) {
       this.commit('scale', scale)
     },
 
-    setInputStyle(this: Store, ctx: Context, inputStyle: InputStyle) {
+    setInputStyle(this: Store, _ctx: Context, inputStyle: InputStyle) {
       this.commit('inputStyle', inputStyle)
     },
 
-    setRippleEffect(this: Store, ctx: Context, enabled: RippleEffect) {
+    setRippleEffect(this: Store, _ctx: Context, enabled: RippleEffect) {
       this.commit('rippleEffect', enabled)
     },
   },
