@@ -1,5 +1,5 @@
-<script setup lang="ts" type="tsx">
-import ConfigUI from '@/components/settings/ConfigUI.vue'
+<script lang="ts" setup type="tsx">
+import SettingsUI from '@/components/settings/SettingsUI.vue'
 import SwitchTheme from '@/components/settings/SwichTheme.vue'
 import UniverseManager from '@/components/settings/universe/UniverseManager.vue'
 import Divider from 'primevue/divider'
@@ -31,14 +31,14 @@ const visible = computed({
 <template>
   <Sidebar
     v-model:visible="visible"
-    position="right"
     :dismissable="true"
     modal
+    position="right"
   >
     <UniverseManager />
     <Divider />
     <SwitchTheme />
     <Divider />
-    <ConfigUI />
+    <SettingsUI />
   </Sidebar>
 </template>

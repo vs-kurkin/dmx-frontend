@@ -1,13 +1,13 @@
-<script setup lang="ts" type="tsx">
+<script lang="ts" setup type="tsx">
 import SocketProvider from '@/components/common/SocketProvider.vue'
-import { type State, type Store, StoreKey } from '@/store'
-import { EVENT_CONNECT, EVENT_DISCONNECT } from '@/store/plugins/websocket.js'
+import { type Store, StoreKey } from '@/store'
+import { EVENT_CONNECT, EVENT_DISCONNECT } from '@/store/plugins/websocket.ts'
 // noinspection ES6UnusedImports
 import 'primevue/toast'
 import { useToast } from 'primevue/usetoast'
 import { useStore } from 'vuex'
 
-const store: Store<State> = useStore<State>(StoreKey)
+const store: Store = useStore(StoreKey)
 const toast = useToast()
 
 const onConnect = async () => {

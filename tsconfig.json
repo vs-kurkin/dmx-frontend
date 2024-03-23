@@ -2,58 +2,56 @@
   "compileOnSave": true,
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "alwaysStrict": true,
     "baseUrl": ".",
-    "composite": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "sourceRoot": "src",
     "lib": [
-      "esnext",
-      "dom",
-      "ScriptHost"
+      "ESNext",
+      "ES7",
+      "ES6",
+      "DOM"
     ],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "noFallthroughCasesInSwitch": false,
-    "noImplicitAny": false,
-    "outDir": "dist",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "noImplicitAny": true,
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["src/*"]
     },
     "plugins": [
       {
         "name": "@vue/babel-preset-app"
       }
     ],
-    "removeComments": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strictBindCallApply": false,
-    "strictNullChecks": false,
     "strict": true,
-    "target": "esnext",
+    "sourceMap": true,
+    "strictBindCallApply": true,
+    "strictNullChecks": true,
+    "target": "ESNext",
+    "allowImportingTsExtensions": true,
     "types": [
-      "webpack-env",
       "jest",
       "vite/client",
       "node"
     ],
-    "useDefineForClassFields": true
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "useDefineForClassFields": true,
+    "allowArbitraryExtensions": false
   },
   "exclude": [
     "node_modules"
   ],
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
+    "src/*.vue",
+    "src/*.ts",
     "src/**/*.vue",
+    "src/**/*.ts",
     "src/**/*.json",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
   ],
   "rules": {
     "@typescript-eslint/indent": [

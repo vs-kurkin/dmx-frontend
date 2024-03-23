@@ -1,6 +1,7 @@
-<script setup lang="ts" type="tsx">
+<script lang="ts" setup type="tsx">
 import SocketListener from '@/components/settings/universe/SocketListener.vue'
-import { type State, type Store, StoreKey } from '@/store'
+import { type Store, StoreKey } from '@/store'
+import type { DeviceMap } from '@/store/modules/serial.ts'
 import { PrimeIcons } from 'primevue/api'
 import Button from 'primevue/button'
 import Listbox, { type ListboxChangeEvent } from 'primevue/listbox'
@@ -8,20 +9,23 @@ import { useConfirm } from 'primevue/useconfirm'
 import { ref } from 'vue'
 import { useStore } from 'vuex'
 
-const store: Store<State> = useStore<State>(StoreKey)
+const store: Store = useStore(StoreKey)
 const confirm = useConfirm()
 
-const universe = ref<string>(store.state.universe.current)
-const universes = ref<string[]>(store.state.universe.list)
+const current = ref<string | void>(store.state.serial.current)
+const universes = ref<string[]>(store.state.serial.universes)
+const devices = ref<DeviceMap>(store.state.serial.devices)
 
-
-const deleteUniverse = async (event: MouseEvent | PointerEvent, name: string) => {
+const deleteUniverse = async (event: MouseEvent | PointerEvent, id: string) => {
   event.stopPropagation()
 
   confirm.require({
     message: 'Do you want to delete this universe?',
-    accept: () => store.dispatch('deleteUniverse', name),
-    header: `Delete ${name}`,
+    accept: () => {
+      store.dispatch('deleteUniverse', id)
+      store.dispatch('resetAllChannelValues')
+    },
+    header: `Delete ${id}`,
     acceptIcon: PrimeIcons.CHECK,
     rejectIcon: PrimeIcons.TIMES,
     icon: PrimeIcons.INFO_CIRCLE,
@@ -29,13 +33,13 @@ const deleteUniverse = async (event: MouseEvent | PointerEvent, name: string) =>
   })
 }
 
-const changeUniverse = ({ value }: ListboxChangeEvent) => {
-  store.dispatch('setCurrentUniverse', value)
+const changeUniverse = ({ value: device }: ListboxChangeEvent) => {
+  store.dispatch('setCurrentUniverse', device)
 
-  if (value == null) {
-    store.dispatch('resetAllChannelValues')
+  if (device) {
+    store.dispatch('getAllChannelValues', device)
   } else {
-    store.dispatch('getAllChannelValues', value)
+    store.dispatch('resetAllChannelValues')
   }
 }
 </script>
@@ -44,23 +48,23 @@ const changeUniverse = ({ value }: ListboxChangeEvent) => {
   <SocketListener />
 
   <Listbox
-    v-model="universe"
-    :options="universes"
+    v-model="current"
     :disabled="!universes.length"
-    empty-message="No universes"
+    :options="universes"
     class="w-auto"
+    empty-message="No universes"
     @change="changeUniverse"
   >
     <template #option="{ option }">
       <div class="flex justify-content-between align-items-center">
-        {{ option }}
+        {{ devices.get(option)?.friendlyName }}
         <Button
-          :icon=PrimeIcons.TIMES
+          :icon="PrimeIcons.TIMES"
+          class="flex ml-2 w-1 h-2rem"
           severity="danger"
           size="small"
-          class="flex ml-2 w-1 h-2rem"
           text
-          @click="event => deleteUniverse(event, option)"
+          @click="(event) => deleteUniverse(event, option)"
         />
       </div>
     </template>

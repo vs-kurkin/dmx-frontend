@@ -1,8 +1,8 @@
-import { getValues } from '@/api/dmx'
-import type { Context, Store } from '@/store/types'
+import { getValues } from '@/api/dmx.ts'
+import type { Context, Store } from '@/store'
 
 export type ChannelPayload = {
-  name: string;
+  id: string;
   channel: number;
   value: number;
 };
@@ -31,7 +31,7 @@ export default {
 
   actions: {
     async updateChannel(this: Store, _ctx: Context, payload: ChannelPayload) {
-      await this.socket.emitSocket('update', payload)
+      await this.socket?.emitSocket('update', payload)
 
       this.commit('channel', payload)
     },

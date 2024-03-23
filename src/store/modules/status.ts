@@ -1,6 +1,4 @@
-import type { UniverseState } from '@/store/modules/universe'
-import type { Context, Store } from '@/store/types'
-
+import type { Context, Store } from '@/store'
 
 export interface StatusState {
   connected: boolean
@@ -12,14 +10,14 @@ export default {
   },
 
   mutations: {
-    connected(state: UniverseState, flag: boolean) {
+    connected(state: StatusState, flag: boolean) {
       state.connected = flag
     },
   },
 
   actions: {
     connect(this: Store, { state }: Context) {
-      if (state.connected === false) {
+      if (!state.connected) {
         this.commit('connected', true)
       }
     },

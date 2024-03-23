@@ -1,36 +1,43 @@
 // noinspection JSUnusedGlobalSymbols
 
-import { baseHost, basePort } from '@/configs/fetch'
+import { baseHost, basePort, baseProtocol } from '@/configs/fetch'
 
+// Base URL type
 export type Url = URL | string
+// HTTP Request options
 export type Options = RequestInit
+// HTTP Request results
 export type Result<T> = Promise<T | void>
 
 export type Sender = (url: Url, options?: Options) => Promise<Response>
 export type Handler = <T>(response: Response) => Result<T> | void
 
-const BASE_URL = `${baseHost}:${basePort}`
+// Default URL for requests
+const BASE_URL = `${baseProtocol}//${baseHost}:${basePort}`
 
+
+// Callback of error handling
 export const errorHandler: Handler = async <T>(response: Response): Result<T> => {
   if (!response.ok) {
     throw new Error(response.statusText)
   }
 }
 
+// Callback of JSON data processing for HTTP request results
 export const jsonParse: Handler = async <T>(response: Response): Result<T> =>
   response.ok ? await response.json() as T : await errorHandler<T>(response)
 
-
+// Function of send HTTP request
 export const sender: Sender = async (url: Url = '', options?: RequestInit): Promise<Response> =>
   await fetch(new URL(url, BASE_URL), options)
 
-
-export const target = (defaults?: Options, handler = errorHandler) =>
+// Controller of HTTP request
+export const target = (defaults?: Options, handler: Handler = errorHandler) =>
   async <T>(url: Url = '', options?: Options): Result<T> =>
     await handler<T>(await sender(url, { ...defaults, ...options }))
 
-
-export const setup = (base = '', handler = errorHandler) =>
+// Function of configuration HTTP request
+export const setup = (base = '', handler: Handler = errorHandler) =>
   async <T>(path = '', options?: Options): Result<T> =>
     await target(options, handler)<T>(base + path)
 

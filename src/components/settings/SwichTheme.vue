@@ -1,43 +1,36 @@
-<script setup lang="ts" type="tsx">
-import { type State, type Store, StoreKey } from '@/store'
-import PanelMenu from 'primevue/panelmenu'
-import { useStore } from 'vuex'
-import type { MenuItem } from 'primevue/menuitem/MenuItem.d.ts'
+<script lang="ts" setup type="tsx">
 import themes from '@/configs/themes.json'
+import { type Store, StoreKey } from '@/store'
+import type { Theme } from '@/store/modules/settings.ts'
+import Listbox from 'primevue/listbox'
+import { ref } from 'vue'
+import { useStore } from 'vuex'
 
-export interface ThemeList {
-  [group: string]: string;
+type ThemeName = keyof typeof themes
+type ThemeKey = Theme<typeof themes>
+
+const store: Store = useStore(StoreKey)
+const name = store.state.settings.theme as ThemeName
+const list = Object.keys(themes) as ThemeName[]
+const selected = ref<ThemeName>(list.find((key) => themes[key] === name) as ThemeName)
+
+const changeTheme = (value: ThemeName | void) => {
+  if (value) {
+    selected.value = value
+    store.dispatch('setTheme', themes[value] as ThemeKey)
+  }
 }
 
-const store: Store<State> = useStore<State>(StoreKey)
-
-const command = ({ item }) => {
-  const { key: group, label } = item
-  const key = themes[group][label]
-  const name = `${group}/${label}`
-
-  store.dispatch('setTheme', { key, name })
-}
-
-const items: MenuItem[] = Object.keys(themes).map(
-  (key: string): MenuItem => ({
-    label: key,
-    items: Object.keys(themes[key] as ThemeList).map(
-      (label): MenuItem => ({
-        label,
-        key,
-        command,
-      }),
-    ),
-  }),
-)
 </script>
 
 <template>
   <div class="flex justify-content-between align-items-center">
-    <h3>Skin:</h3>
-    <span class="text-sm p-text-secondary">{{ store.state.settings.theme.name }}</span>
+    <h3>Theme:</h3>
+    <span class="text-sm p-text-secondary">{{ selected }}</span>
   </div>
 
-  <PanelMenu :model="items" />
+  <Listbox
+    :model-value="selected"
+    :options="list"
+    @update:modelValue="changeTheme" />
 </template>

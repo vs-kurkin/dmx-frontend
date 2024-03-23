@@ -1,8 +1,8 @@
-<script setup lang="ts" type="tsx">
+<script lang="ts" setup type="tsx">
 import NavigationMenu from '@/components/common/NavigationMenu.vue'
 import SettingsBar from '@/components/settings/SettingsPanel.vue'
 import { type State, type Store, StoreKey } from '@/store'
-import { applySettings, setupPrimeVue } from '@/store/plugins/gui'
+import { setupPrimeVue, THEME_LINK_ID } from '@/store/plugins/gui.ts'
 import { PrimeIcons } from 'primevue/api'
 import Button from 'primevue/button'
 import { usePrimeVue } from 'primevue/config'
@@ -14,33 +14,32 @@ import { RouterView } from 'vue-router'
 import { useStore } from 'vuex'
 
 const store: Store<State> = useStore<State>(StoreKey)
-const { key } = store.state.settings.theme
+const { theme, inputStyle } = store.state.settings
 const showSettings = ref(false)
-const styleSheetPath = `themes/${key}/theme.css`
+const styleSheetPath = `themes/${theme}/theme.css`
 
-setupPrimeVue(usePrimeVue(), 'theme_style')
-applySettings(store.state.settings)
+setupPrimeVue(usePrimeVue())
 </script>
 
 <template>
   <header>
-    <link :href="styleSheetPath" rel="stylesheet" id="theme_style">
+    <link :id="THEME_LINK_ID" :href="styleSheetPath" rel="stylesheet">
   </header>
 
-  <div :class="store.state.settings.inputStyle === 'filled' && 'p-input-filled'">
+  <div :class="inputStyle === 'filled' && 'p-input-filled'">
     <NavigationMenu>
       <template #end>
         <Button
-          type="button"
           :icon=PrimeIcons.COG
+          type="button"
           @click="showSettings = true"
         />
       </template>
     </NavigationMenu>
 
     <SettingsBar
-      v-model:show="showSettings"
       ref="settings"
+      v-model:show="showSettings"
       position="right"
     />
 

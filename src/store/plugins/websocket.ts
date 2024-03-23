@@ -1,5 +1,5 @@
-import { host, options, port } from '@/configs/websocket'
-import type { Store } from '@/store/types'
+import { host, options, port } from '@/configs/websocket.ts'
+import type { Store } from '@/store'
 import { io, Socket } from 'socket.io-client'
 import type { MutationPayload } from 'vuex'
 
@@ -31,38 +31,38 @@ export class SocketAdapter {
     this.store = store
   }
 
-  connect() {
+  connect(): SocketAdapter {
     this.socket.connect()
 
     return this
   }
 
-  disconnect() {
+  disconnect(): SocketAdapter {
     this.socket.disconnect()
 
     return this
   }
 
   // noinspection JSUnusedGlobalSymbols
-  async emitStore<D = EventData>(event: StoreEvent, data: D) {
+  async emitStore<D = EventData>(event: StoreEvent, data: D): Promise<SocketAdapter> {
     await this.store.dispatch(event, data)
 
     return this
   }
 
-  async emitSocket<D = EventData>(event: SocketEvent, data: D) {
+  async emitSocket<D = EventData>(event: SocketEvent, data: D): Promise<SocketAdapter> {
     this.socket.emit(event, data)
 
     return this
   }
 
-  onSocket<D>(event: SocketEvent, listener: EventListener<D>) {
+  onSocket<D>(event: SocketEvent, listener: EventListener<D>): SocketAdapter {
     this.socket.on(event, listener)
 
     return this
   }
 
-  onStore<D>(event: StoreEvent, listener: EventListener<D>) {
+  onStore<D>(event: StoreEvent, listener: EventListener<D>): SocketAdapter {
     const handler: MutationHandler<MutationPayload> = mutation =>
       event === mutation.type && listener(mutation.payload)
 
@@ -75,7 +75,7 @@ export class SocketAdapter {
     source: SocketEvent,
     target: T,
     emitter: EventEmitter<T, D>,
-  ) {
+  ): SocketAdapter {
     const listener: EventListener<D> = payload => emitter(target, payload)
 
     return this.onSocket(source, listener)
@@ -86,7 +86,7 @@ export class SocketAdapter {
     source: StoreEvent,
     target: T,
     emitter: EventEmitter<T, D>,
-  ) {
+  ): SocketAdapter {
     const listener: EventListener<D> = payload => emitter(target, payload)
 
     return this.onStore(source, listener)
@@ -97,4 +97,4 @@ export default (store: Store) => {
   const socket: Socket = io(`${host}:${port}`, options)
 
   store.socket = new SocketAdapter(socket, store)
-};
+}

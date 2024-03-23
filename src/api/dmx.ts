@@ -1,7 +1,7 @@
-import { DELETE, GET, jsonParse, POST, setup } from '@/plugins/fetch'
+import { DELETE, GET, jsonParse, POST, setup } from '@/utils/fetch'
 
 export type Driver =
-  'null'
+  | 'null'
   | 'socketio'
   | 'dmx4all'
   | 'enttec-usb-dmx-pro'
@@ -9,24 +9,24 @@ export type Driver =
   | 'dmxking-ultra-dmx-pro'
   | 'artnet'
   | 'bbdmx'
-  | 'sacn'
+  | 'sacn';
 
 export type UniverseOptions = {
-  name: string
+  id: string
   path: string
   driver: string
 }
 
-const serial = setup('dmx', jsonParse)
+const dmx = setup('dmx', jsonParse)
 
 export const getDrivers = () =>
-  serial<Driver>('/drivers', GET)
+  dmx<Driver>('/drivers', GET)
 
 export const getUniverses = () =>
-  serial<string[]>('', GET)
+  dmx<string[]>('', GET)
 
 export const addUniverse = (options: UniverseOptions) =>
-  serial<void>('', {
+  dmx<void>('', {
     ...POST,
     headers: {
       'Content-Type': 'application/json',
@@ -34,11 +34,11 @@ export const addUniverse = (options: UniverseOptions) =>
     body: JSON.stringify(options),
   })
 
-export const deleteUniverse = (name: string) =>
-  serial<void>(`/${name}`, DELETE)
+export const deleteUniverse = (id: string) =>
+  dmx<void>(`/${id}`, DELETE)
 
 export const deleteAllUniverses = () =>
-  serial<void>('', DELETE)
+  dmx<void>('', DELETE)
 
-export const getValues = (name: string) =>
-  serial<number[]>(`/${name}/values/`, GET)
+export const getValues = (id: string) =>
+  dmx<number[]>(`/${id}/values/`, GET)

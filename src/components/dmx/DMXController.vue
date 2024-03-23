@@ -1,4 +1,4 @@
-<script setup lang="ts" type="tsx">
+<script lang="ts" setup type="tsx">
 import DMXChannel from '@/components/dmx/DMXChannel.vue'
 import Paginator, { type PageState } from 'primevue/paginator'
 import ScrollPanel from 'primevue/scrollpanel'
@@ -38,10 +38,10 @@ const onChangePage = (state: PageState) => {
   <div class="text-center">
     <Paginator
       :first="first"
-      :total-records="total"
-      :rows="24"
       :page-link-size="1"
+      :rows="24"
       :rows-per-page-options="[12, 24, 36, 48]"
+      :total-records="total"
       class="inline-block"
       @page="onChangePage"
     />

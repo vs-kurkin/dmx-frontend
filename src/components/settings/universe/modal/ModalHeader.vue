@@ -1,5 +1,9 @@
-<script setup lang="ts" type="tsx">
+<script lang="ts" setup type="tsx">
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions'
 import Steps from 'primevue/steps'
+import { inject, type Ref } from 'vue'
+
+const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
 
 const steps = [
   {
@@ -12,5 +16,14 @@ const steps = [
 </script>
 
 <template>
-  <Steps :model="steps" readonly class="w-full" />
+  <Steps
+    v-model:active-step="dialogRef.data.step"
+    :model="steps"
+    class="w-full"
+    readonly
+  />
 </template>
+
+<style scoped>
+
+</style>

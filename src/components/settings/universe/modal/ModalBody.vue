@@ -1,83 +1,80 @@
-<script setup lang="ts" type="tsx">
-import { getDevices } from '@/api/serial'
-import { type State, type Store, StoreKey } from '@/store'
+<script lang="ts" setup type="tsx">
+import type { SerialDevice } from '@/api/serial.ts'
+import { type Store, StoreKey } from '@/store'
+import type { DeviceMap } from '@/store/modules/serial.ts'
 import { PrimeIcons } from 'primevue/api'
 import Button from 'primevue/button'
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions'
 import Listbox from 'primevue/listbox'
 import { useToast } from 'primevue/usetoast'
-import { inject, onMounted, type Ref, ref } from 'vue'
+import { inject, type Ref, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
-const store: Store<State> = useStore<State>(StoreKey)
+const store: Store = useStore(StoreKey)
 const toast = useToast()
 
-const drivers = ref<string[]>(store.state.universe.drivers)
-const devices = ref()
-const device = ref()
-const driver = ref()
+const devices = ref<DeviceMap>(store.state.serial.devices)
+const drivers = ref<string[]>(store.state.serial.drivers)
+const device = ref<SerialDevice>()
+const driver = ref<string>()
 
+watch(device, (value) => {
+  dialogRef && (dialogRef.value.data.step = value ? 1 : 0)
+})
 
 const addUniverse = async () => {
   try {
+    if (!device.value) {
+      return
+    }
+
     await store.dispatch('addUniverse', {
-      name: device.value.friendlyName,
-      path: device.value.path,
+      device: device.value,
       driver: driver.value,
     })
 
-    dialogRef.value.close()
+    await store.dispatch('setCurrentUniverse', device.value.serialNumber)
 
-    successHandler('Success to add device')
+    dialogRef?.value.close()
   } catch (error) {
     errorHandler('Failed to add device', (error as Error).message)
+
+    throw error
   }
 }
 
 const refreshData = async () => {
-  device.value = driver.value = null
+  device.value = undefined
+  driver.value = undefined
 
-  try {
-    devices.value = await getDevices()
-
-    await store.dispatch('updateDrivers')
-  } catch (error) {
-    errorHandler('Failed to refresh data', (error as Error).message)
-  }
+  await store.dispatch('updateSerial')
 }
 
-onMounted(refreshData)
-
-const successHandler = (summary: string) => toast.add({
-  summary,
-  severity: 'success',
-  life: 3000,
-})
-
-const errorHandler = (summary: string, detail: string) => toast.add({
-  summary,
-  detail,
-  severity: 'error',
-  life: 2000,
-})
+const errorHandler = (summary: string, detail: string) =>
+  toast.add({
+    summary,
+    detail,
+    severity: 'error',
+    life: 2000,
+  })
 </script>
 
 <template>
   <div class="flex gap-3 align-items-start flex-nowrap">
     <Listbox
       v-model="device"
-      :options="devices"
-      option-label="friendlyName"
+      :options="Array.from(devices.values())"
       data-key="serialNumber"
       empty-message="No devices available"
       list-style="height: 230px"
+      option-label="friendlyName"
     />
 
     <Listbox
       v-model="driver"
-      :options="drivers"
       :disabled="device == null"
+      :options="drivers"
       empty-message="No supported drivers"
       list-style="height: 230px"
     />
@@ -85,25 +82,25 @@ const errorHandler = (summary: string, detail: string) => toast.add({
 
   <div class="flex gap-2 mt-4 relative">
     <Button
+      :icon="PrimeIcons.TIMES"
       label="Cancel"
-      :icon=PrimeIcons.TIMES
       severity="secondary"
-      @click=dialogRef.close
+      @click="dialogRef.close"
     />
 
-    <Button
-      label="Refresh"
-      :icon=PrimeIcons.REFRESH
-      @click=refreshData
-    />
+    <Button :icon="PrimeIcons.REFRESH" label="Refresh" @click="refreshData" />
 
     <Button
-      label="Add"
-      :icon=PrimeIcons.CHECK
-      severity="success"
-      class="absolute right-0"
       :disabled="!device || !driver"
-      @click=addUniverse
+      :icon="PrimeIcons.CHECK"
+      class="absolute right-0"
+      label="Add"
+      severity="success"
+      @click="addUniverse"
     />
   </div>
 </template>
+
+<style scoped>
+
+</style>
