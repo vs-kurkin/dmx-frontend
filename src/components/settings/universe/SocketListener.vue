@@ -1,17 +1,13 @@
 <script lang="ts" setup type="tsx">
-import SocketProvider from '@/components/common/SocketProvider.vue'
-import { type Store, StoreKey } from '@/store'
-import { EVENT_CONNECT, EVENT_DISCONNECT } from '@/store/plugins/websocket.ts'
-// noinspection ES6UnusedImports
+import { getStore } from '@/store'
 import 'primevue/toast'
 import { useToast } from 'primevue/usetoast'
-import { useStore } from 'vuex'
 
-const store: Store = useStore(StoreKey)
+const store = getStore()
 const toast = useToast()
 
 const onConnect = async () => {
-  await store.dispatch(EVENT_CONNECT)
+  await store.dispatch('status/connect')
 
   toast.add({
     severity: 'success',
@@ -21,7 +17,7 @@ const onConnect = async () => {
 }
 
 const onDisconnect = async (error: unknown) => {
-  await store.dispatch(EVENT_DISCONNECT)
+  await store.dispatch('status/disconnect')
 
   toast.add({
     severity: 'warn',
@@ -41,7 +37,7 @@ const onError = (error: string) => toast.add({
 
 <template>
   <SocketProvider
-    listen-type="current"
+    store-model="serial/current"
     @connect="onConnect"
     @disconnect="onDisconnect"
     @error="onError"

@@ -1,56 +1,56 @@
-// noinspection JSUnusedGlobalSymbols
+import { apiHost, apiPort, apiProtocol } from '@/configs/api'
 
-import { baseHost, basePort, baseProtocol } from '@/configs/fetch'
-
-// Base URL type
-export type Url = URL | string
-// HTTP Request options
 export type Options = RequestInit
-// HTTP Request results
-export type Result<T> = Promise<T | void>
-
-export type Sender = (url: Url, options?: Options) => Promise<Response>
-export type Handler = <T>(response: Response) => Result<T> | void
+export type Sender = <T>(url: string, options?: Options) => Promise<T>
+export type Handler = <T>(response: Response) => Promise<T>
 
 // Default URL for requests
-const BASE_URL = `${baseProtocol}//${baseHost}:${basePort}`
+const BASE_URL = `${apiProtocol}//${apiHost}:${apiPort}`
 
+export const CONTENT_TYPE_JSON = { 'Content-Type': 'application/json' }
+
+export const HEADER_JSON = {
+  headers: CONTENT_TYPE_JSON,
+}
 
 // Callback of error handling
-export const errorHandler: Handler = async <T>(response: Response): Result<T> => {
+export const errorHandler: Handler = async <T>(response: Response): Promise<T> => {
   if (!response.ok) {
     throw new Error(response.statusText)
   }
+
+  return await response.text() as T
 }
 
 // Callback of JSON data processing for HTTP request results
-export const jsonParse: Handler = async <T>(response: Response): Result<T> =>
+export const jsonParse: Handler = async <T>(response: Response): Promise<T> =>
   response.ok ? await response.json() as T : await errorHandler<T>(response)
 
 // Function of send HTTP request
-export const sender: Sender = async (url: Url = '', options?: RequestInit): Promise<Response> =>
-  await fetch(new URL(url, BASE_URL), options)
+export const request: Sender = async <T>(url = '', options?: Options): Promise<T> =>
+  await fetch(new URL(url, BASE_URL), options) as T
 
 // Controller of HTTP request
-export const target = (defaults?: Options, handler: Handler = errorHandler) =>
-  async <T>(url: Url = '', options?: Options): Result<T> =>
-    await handler<T>(await sender(url, { ...defaults, ...options }))
+export const sender = <R>(defaultOptions?: Options, handler: Handler = errorHandler): Sender =>
+  async <T=R>(url = '', options?: Options): Promise<T> =>
+    await handler<T>(await request(url, { ...defaultOptions, ...options }))
 
 // Function of configuration HTTP request
-export const setup = (base = '', handler: Handler = errorHandler) =>
-  async <T>(path = '', options?: Options): Result<T> =>
-    await target(options, handler)<T>(base + path)
+export const target = (base = '', handler: Handler = errorHandler): Sender =>
+  async <T>(path = '', options?: Options): Promise<T> =>
+    await sender<T>(options, handler)(`${base}${path}`)
 
 
-export const GET = { method: 'GET' }
-export const POST = { method: 'POST' }
-export const PUT = { method: 'PUT' }
-export const PATCH = { method: 'PATCH' }
-export const DELETE = { method: 'DELETE' }
+export const GET: Options = { method: 'GET' }
+export const POST: Options = { method: 'POST' }
+export const PUT: Options = { method: 'PUT' }
+export const PATCH: Options = { method: 'PATCH' }
+export const DELETE: Options = { method: 'DELETE' }
 
 
-export const get = target(GET)
-export const post = target(POST)
-export const put = target(PUT)
-export const patch = target(PATCH)
-export const del = target(DELETE)
+export const get = sender(GET)
+export const post = sender(POST)
+export const put = sender(PUT)
+export const patch = sender(PATCH)
+export const del = sender(DELETE)
+

@@ -1,48 +1,51 @@
 <script lang="ts" setup type="tsx">
-import { PrimeIcons } from 'primevue/api'
-import Button from 'primevue/button'
-import Menubar from 'primevue/menubar'
-import type { MenuItem } from 'primevue/menuitem/MenuItem.d.ts'
-import { type Ref, ref } from 'vue'
+import { MAIN_MENU } from '@/utils/constants'
+import { PrimeIcons } from '@primevue/core/api'
+import type { MenuItem } from 'primevue/menuitem'
+import { ref } from 'vue'
 
-const items: Ref<MenuItem[]> = ref([
-  {
-    label: 'Dashboard',
-    icon: PrimeIcons.HOME,
-    route: { name: 'dashboard' },
-  },
-  {
-    label: 'Devices',
-    icon: PrimeIcons.SUN,
-    route: { name: 'devices' },
-  },
-  {
-    label: 'Controller',
-    icon: PrimeIcons.SLIDERS_V,
-    route: { name: 'controller' },
-  },
-  {
-    label: 'Playground',
-    icon: PrimeIcons.PLAY,
-    route: { name: 'playground' },
-  },
-])
+const showSettings = ref(false)
+const items = ref<MenuItem[]>(MAIN_MENU)
 </script>
 
 <template>
-  <Menubar :model="items" class="w-full">
+  <SettingsPanel
+    ref="settings"
+    v-model:show="showSettings"
+    position="right"
+  />
+
+  <Menubar
+    :model="items"
+    class="w-full"
+  >
     <template #start>
       <slot name="start" />
     </template>
 
     <template #item="{ item }">
       <router-link :to="item.route">
-        <Button :icon="item.icon" :label="String(item.label)" text />
+        <Button
+          :icon="item.icon"
+          :label="String(item.label)"
+          text
+        />
       </router-link>
     </template>
 
     <template #end>
-      <slot name="end" />
+      <div class="flex-column gap-2">
+        <UniverseSelect>
+          <template #after>
+            <Button
+              :icon="PrimeIcons.COG"
+              severity="primary"
+              type="button"
+              @click="showSettings = true"
+            />
+          </template>
+        </UniverseSelect>
+      </div>
     </template>
   </Menubar>
 </template>

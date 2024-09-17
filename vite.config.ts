@@ -1,25 +1,43 @@
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { fileURLToPath, URL } from 'node:url'
+import { PrimeVueResolver } from 'unplugin-vue-components/resolvers'
+import Components from 'unplugin-vue-components/vite'
+import { type ConfigEnv, defineConfig, loadEnv } from 'vite'
 
-import { defineConfig } from 'vite'
+export default defineConfig(({ mode }: ConfigEnv) => {
+  const env = loadEnv(mode, import.meta.dirname)
 
-export const DEFAULT_HOST = '0.0.0.0'
-export const DEFAULT_PORT = 80
+  return {
+    base: env.BASE_URL,
 
-export default defineConfig({
+    mode,
 
-  plugins: [vue(), vueJsx()],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    plugins: [
+      vue(),
+      vueJsx(),
+
+      Components({
+        dts: 'src/types/components.d.ts',
+        resolvers: [
+          PrimeVueResolver(),
+        ],
+      }),
+    ],
+
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+      },
     },
-  },
-  server: {
-    host: process.env.VITE_HOST || DEFAULT_HOST,
-    port: Number(process.env.VITE_PORT) || DEFAULT_PORT,
-    cors: {
-      origin: process.env.NODE_ENV === 'production' ? false : ['*'],
+
+    server: {
+      cors: {
+        origin: env.PROD ? false : ['*'],
+      },
+      host: env.VITE_HOST,
+      port: Number(env.VITE_PORT) || undefined,
     },
-  },
+  }
 })
+

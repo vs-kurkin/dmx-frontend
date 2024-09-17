@@ -1,21 +1,16 @@
 <script lang="ts" setup type="tsx">
 import NavigationMenu from '@/components/common/NavigationMenu.vue'
-import SettingsBar from '@/components/settings/SettingsPanel.vue'
-import { type State, type Store, StoreKey } from '@/store'
-import { setupPrimeVue, THEME_LINK_ID } from '@/store/plugins/gui.ts'
-import { PrimeIcons } from 'primevue/api'
-import Button from 'primevue/button'
-import { usePrimeVue } from 'primevue/config'
+import { getStore } from '@/store'
+import { setupPrimeVue, THEME_LINK_ID } from '@/store/plugins/gui'
+import { usePrimeVue } from '@primevue/core'
 import ConfirmDialog from 'primevue/confirmdialog'
 import DynamicDialog from 'primevue/dynamicdialog'
 import Toast from 'primevue/toast'
-import { ref } from 'vue'
 import { RouterView } from 'vue-router'
-import { useStore } from 'vuex'
 
-const store: Store<State> = useStore<State>(StoreKey)
-const { theme, inputStyle } = store.state.settings
-const showSettings = ref(false)
+const store = getStore()
+
+const { theme, input } = store.state.settings
 const styleSheetPath = `themes/${theme}/theme.css`
 
 setupPrimeVue(usePrimeVue())
@@ -23,31 +18,18 @@ setupPrimeVue(usePrimeVue())
 
 <template>
   <header>
-    <link :id="THEME_LINK_ID" :href="styleSheetPath" rel="stylesheet">
+    <link
+      :id="THEME_LINK_ID"
+      :href="styleSheetPath"
+      rel="stylesheet"
+    >
   </header>
 
-  <div :class="inputStyle === 'filled' && 'p-input-filled'">
-    <NavigationMenu>
-      <template #end>
-        <Button
-          :icon=PrimeIcons.COG
-          type="button"
-          @click="showSettings = true"
-        />
-      </template>
-    </NavigationMenu>
-
-    <SettingsBar
-      ref="settings"
-      v-model:show="showSettings"
-      position="right"
-    />
-
+  <div :class="`${input === 'filled' ? 'p-input-filled' : ''} app-container`">
+    <NavigationMenu />
+    <RouterView />
     <DynamicDialog />
     <ConfirmDialog />
-
-    <RouterView />
-
     <Toast position="bottom-left" />
   </div>
 </template>

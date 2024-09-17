@@ -1,55 +1,32 @@
 <script lang="ts" setup type="tsx">
-import { type Store, StoreKey } from '@/store'
-import { PrimeIcons } from 'primevue/api'
-import Button from 'primevue/button'
-import InputNumber from 'primevue/inputnumber'
+import { getStore } from '@/store'
+import { TYPE, TYPES } from '@/utils/constants'
 import Slider from 'primevue/slider'
-import { type Ref, ref } from 'vue'
-import { useStore } from 'vuex'
+import { ref } from 'vue'
 
 export interface Props {
   address: number;
-  amount?: number | void;
-  default?: number;
   disabled?: boolean;
-  max?: number;
-  min?: number;
-  steps?: number[] | void;
-  title?: string | void;
 }
 
 const emit = defineEmits<{
   update: [channel: number, value: number];
 }>()
 
-const props: Props = withDefaults(defineProps<Props>(), {
-  default: 0,
+const props = withDefaults(defineProps<Props>(), {
   disabled: false,
-  max: 255,
-  min: 0,
 })
 
-const store: Store = useStore(StoreKey)
+const store = getStore()
 
-const channel: Ref<number[]> = ref(store.state.dmx.channel)
-const current: Ref<number> = ref(channel.value[props.address])
-
-store.socket?.onSocket('dmx', (data) => {
-  console.log(data)
-})
-
-/*watch(store.state.dmx.channel, (state: SettingsState) => {
-
-})*/
+const channel = ref(store.state.dmx.channel)
 
 const updateChannel = async (value: number) => {
-  if (current.value === value) {
+  if (channel.value[props.address] === value) {
     return
   }
 
-  current.value = value
-
-  await store.dispatch('updateChannel', {
+  await store.dispatch('dmx/update', {
     id: store.state.serial.current,
     channel: props.address,
     value,
@@ -59,43 +36,21 @@ const updateChannel = async (value: number) => {
 }
 
 const resetChannel = () => updateChannel(0)
-
-const list = [
-  '',
-  'strobe',
-  'rotate',
-  'color',
-  'display',
-  'laser',
-  'lamp',
-  'head',
-  'mode',
-]
-
-const TYPE = {
-  strobe: PrimeIcons.BOLT,
-  rotate: PrimeIcons.REFRESH,
-  color: PrimeIcons.PALETTE,
-  display: PrimeIcons.DESKTOP,
-  laser: PrimeIcons.SHARE_ALT,
-  lamp: PrimeIcons.SUN,
-  head: PrimeIcons.EYE,
-  mode: PrimeIcons.LIST,
-}
 </script>
 
 <template>
   <div class="channel-wrapper m-1">
     <Button
-      :icon="TYPE[list[address] || 0]"
+      :icon="TYPE[TYPES[address]]"
       class="border-1 mb-2"
       outlined
       size="small"
-      title="Strobe"
+      title=""
     />
+
     <Button
       v-tooltip.top="{
-        value: title ?? `Reset channel ${address}`,
+        value: `Reset channel ${address}`,
         showDelay: 500,
         hideDelay: 100,
       }"
@@ -109,10 +64,11 @@ const TYPE = {
     </Button>
 
     <Slider
+      key=""
       v-model="channel[props.address]"
       :disabled="disabled"
-      :max="max"
-      :min="min"
+      :max="255"
+      :min="0"
       class="h-20rem m-auto w-2 channel-slider"
       orientation="vertical"
       @update:model-value="updateChannel"
@@ -122,8 +78,8 @@ const TYPE = {
       v-model="channel[props.address]"
       :disabled="disabled"
       :input-id="String(props.address)"
-      :max="max"
-      :min="min"
+      :max="255"
+      :min="0"
       class="channel-value"
       input-class="w-1 text-center"
       @update:model-value="updateChannel"
@@ -131,6 +87,7 @@ const TYPE = {
   </div>
 </template>
 
+<!--suppress CssUnusedSymbol -->
 <style scoped>
 .channel-wrapper {
   text-align: center;

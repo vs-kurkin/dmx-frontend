@@ -1,41 +1,33 @@
 <script lang="ts" setup type="tsx">
-import { type Store, StoreKey } from '@/store'
-import {
-  EVENT_CONNECT,
-  EVENT_DISCONNECT,
-  EVENT_ERROR,
-  EVENT_EXCEPTION,
-  EVENT_SOCKET_ERROR,
-} from '@/store/plugins/websocket.ts'
-import { useStore } from 'vuex'
+import { getStore } from '@/store'
+import { EVENT_CONNECT, EVENT_DISCONNECT, EVENT_ERROR, EVENT_EXCEPTION, EVENT_SOCKET_ERROR } from '@/store/plugins/ws'
 
 export interface Props {
-  listenType: string;
+  storeModel: string;
 }
 
 const emitter = defineEmits<{
   connect: [];
-  disconnect: [string];
-  error: [string];
-  exception: [string];
+  disconnect: [value: string];
+  error: [value: string];
+  exception: [value: string];
 }>()
 
-const { socket }: Store = useStore(StoreKey)
-
 const props = defineProps<Props>()
+const store = getStore()
 
-socket?.onStore<string>(props.listenType, name => {
+store.socket.onStore<typeof props.storeModel>(props.storeModel, name => {
   if (name) {
-    socket.connect()
+    store.socket.connect()
   } else {
-    socket.disconnect()
+    store.socket.disconnect()
   }
 })
 
-socket?.pipeSocket<'connect'>(EVENT_CONNECT, EVENT_CONNECT, emitter)
-socket?.pipeSocket<'disconnect', string>(EVENT_DISCONNECT, EVENT_DISCONNECT, emitter)
-socket?.pipeSocket<'error', string>(EVENT_SOCKET_ERROR, EVENT_ERROR, emitter)
-socket?.pipeSocket<'exception', string>(EVENT_EXCEPTION, EVENT_EXCEPTION, emitter)
+store.socket.pipeSocket<'connect'>(EVENT_CONNECT, EVENT_CONNECT, emitter)
+store.socket.pipeSocket<'disconnect', string>(EVENT_DISCONNECT, EVENT_DISCONNECT, emitter)
+store.socket.pipeSocket<'error', string>(EVENT_SOCKET_ERROR, EVENT_ERROR, emitter)
+store.socket.pipeSocket<'exception', string>(EVENT_EXCEPTION, EVENT_EXCEPTION, emitter)
 </script>
 
 <template>{{}}</template>

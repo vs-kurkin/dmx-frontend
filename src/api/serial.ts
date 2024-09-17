@@ -1,16 +1,10 @@
-import { GET, jsonParse, setup } from '@/utils/fetch'
+import { GET, jsonParse, target } from '@/utils/fetch'
+import type { SerialDrivers, SerialList } from '@dmx-cloud/dmx-types'
 
-export interface SerialDevice {
-  path: string;
-  manufacturer: string;
-  serialNumber: string;
-  pnpId: string;
-  friendlyName: string;
-  vendorId: string;
-  productId: string;
-}
+const serial = target('serial', jsonParse)
 
-const serial = setup('serial', jsonParse)
+export const getList = () =>
+  serial<SerialList>('', GET)
 
-export const getDevices = () =>
-  serial<SerialDevice[]>('', GET)
+export const getDrivers = () =>
+  serial<SerialDrivers>('/drivers', GET)

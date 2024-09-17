@@ -1,8 +1,8 @@
-import device from './device.ts'
-import dmx from './dmx.ts'
-import serial from './serial.ts'
-import settings from './settings.ts'
-import status from './status.ts'
+import device from '@/store/modules/device'
+import dmx from '@/store/modules/dmx'
+import serial from '@/store/modules/serial'
+import settings from '@/store/modules/settings'
+import status from '@/store/modules/status'
 
 export default {
   settings,

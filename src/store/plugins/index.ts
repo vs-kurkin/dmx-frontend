@@ -1,10 +1,8 @@
-import gui from '@/store/plugins/gui.ts'
-import LocalStorage from '@/store/plugins/localStorage.ts'
-import webSocket from '@/store/plugins/websocket.ts'
+import type { State } from '@/store'
+import gui from '@/store/plugins/gui'
+import LocalStorage from '@/store/plugins/localStorage'
+import sse from '@/store/plugins/sse'
+import ws from '@/store/plugins/ws'
+import type { Plugin } from 'vuex'
 
-/** @type {import('vuex').ModuleTree<exports>} */
-export default [
-  gui,
-  LocalStorage,
-  webSocket,
-]
+export default [gui, sse, ws, LocalStorage] as Plugin<State>[]

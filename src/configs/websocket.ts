@@ -1,14 +1,14 @@
 import type { ManagerOptions, SocketOptions } from 'socket.io-client'
 
 export const {
-  VITE_SOCKET_HOST: host = location.hostname,
-  VITE_SOCKET_PORT: port = location.port,
+  VITE_SOCKET_HOST: wsHost = location.hostname,
+  VITE_SOCKET_PORT: wsPort = location.port,
 } = import.meta.env
 
-export type WebSocketOptions = Partial<ManagerOptions & SocketOptions>
+export const PATH = '/ws'
 
-export const options: WebSocketOptions = {
-  path: '/ws',
+export const options: Partial<ManagerOptions & SocketOptions> = {
+  path: PATH,
   autoConnect: false,
   transports: ['websocket'],
   ackTimeout: 1000 * 60,

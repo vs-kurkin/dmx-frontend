@@ -1,4 +1,4 @@
-import type { Store } from '@/store'
+import type { StoreProject } from '@/store'
 
 export interface StorageFacade {
   pull: <T = unknown>(key: string) => T
@@ -7,7 +7,7 @@ export interface StorageFacade {
 
 export const storage = {
   pull<T = unknown>(key: string): T {
-    return JSON.parse(localStorage.getItem(key) as string)
+    return JSON.parse(localStorage.getItem(key) as string) as T
   },
 
   push<T = unknown>(key: string, value: T) {
@@ -19,6 +19,6 @@ export const storage = {
   },
 }
 
-export default (store: Store) => {
+export default (store: StoreProject) => {
   store.storage = storage
 }

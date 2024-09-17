@@ -1,9 +1,8 @@
 <script lang="ts" setup type="tsx">
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions'
-import Steps from 'primevue/steps'
 import { inject, type Ref } from 'vue'
 
-const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
+const dialogRef = inject('dialogRef') as Ref<DynamicDialogInstance>
 
 const steps = [
   {
@@ -16,7 +15,7 @@ const steps = [
 </script>
 
 <template>
-  <Steps
+  <Stepper
     v-model:active-step="dialogRef.data.step"
     :model="steps"
     class="w-full"

@@ -1,23 +1,20 @@
 <script lang="ts" setup type="tsx">
-import { type Store, StoreKey } from '@/store'
-import type { ScaleValue } from '@/store/modules/settings.ts'
-import { DEFAULT_INPUT_STYLE, SCALE_MAX, SCALE_MIN } from '@/store/modules/settings.ts'
-import { PrimeIcons } from 'primevue/api'
-import Button from 'primevue/button'
-import ToggleButton from 'primevue/togglebutton'
-import { type Ref, ref, watch } from 'vue'
-import { useStore } from 'vuex'
+import { getStore } from '@/store'
+import { DEFAULT_INPUT, SCALE_MAX, SCALE_MIN, type SettingScale } from '@/store/modules/settings'
+import { PrimeIcons } from '@primevue/core/api'
+import { ref, watch } from 'vue'
 
-const store: Store = useStore(StoreKey)
+const store = getStore()
 
-const scale: Ref<ScaleValue> = ref(store.state.settings.scale)
-watch(scale, (scale: ScaleValue) => {
-  store.dispatch('setScale', scale)
+const scale = ref(store.state.settings.scale)
+const isOutlined = ref(store.state.settings.input === DEFAULT_INPUT)
+
+watch(scale, (scale: SettingScale) => {
+  store.dispatch('settings/scale', scale)
 })
 
-const inputStyle: Ref<boolean> = ref(store.state.settings.inputStyle === DEFAULT_INPUT_STYLE)
-const changeInputStyle = (flag: boolean) => {
-  store.dispatch('setInputStyle', flag ? 'outlined' : 'filled')
+const changeInputStyle = (isOutlined: boolean) => {
+  store.dispatch('settings/input', isOutlined ? 'outlined' : 'filled')
 }
 </script>
 
@@ -26,10 +23,12 @@ const changeInputStyle = (flag: boolean) => {
 
   <div class="overflow-y-auto max-h-20rem">
     <div class="p-inputgroup mb-1">
-      <div class="p-inputgroup-addon text-color w-full justify-content-start">Scale:</div>
+      <div class="p-inputgroup-addon text-color w-full justify-content-start">
+        Scale:
+      </div>
       <Button
         :disabled="scale === SCALE_MIN"
-        :icon=PrimeIcons.MINUS
+        :icon="PrimeIcons.MINUS"
         class="border-noround-right border-round min-w-min w-2"
         outlined
         size="small"
@@ -40,7 +39,7 @@ const changeInputStyle = (flag: boolean) => {
       </div>
       <Button
         :disabled="scale === SCALE_MAX"
-        :icon=PrimeIcons.PLUS
+        :icon="PrimeIcons.PLUS"
         class="min-w-min w-2"
         outlined
         size="small"
@@ -49,13 +48,16 @@ const changeInputStyle = (flag: boolean) => {
     </div>
 
     <div class="p-inputgroup mb-1">
-      <div class="p-inputgroup-addon text-color w-full justify-content-start">Input style:</div>
+      <div class="p-inputgroup-addon text-color w-full justify-content-start">
+        Input style:
+      </div>
       <ToggleButton
-        v-model="inputStyle"
+        v-model="isOutlined"
         class="p-button-sm border-round border-noround-left p-button-outlined min-w-min"
         off-label="Filled"
         on-label="Outlined"
-        @update:model-value="changeInputStyle" />
+        @update:model-value="changeInputStyle"
+      />
     </div>
   </div>
 </template>

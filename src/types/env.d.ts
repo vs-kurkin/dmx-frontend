@@ -1,5 +1,5 @@
 interface ImportMetaEnv extends Readonly<Record<string, string>> {
-  readonly BASE_URL: string
+  readonly VITE_BASE_URL: string
   readonly VITE_SOCKET_HOST: string
   readonly VITE_SOCKET_PORT: string
   readonly VITE_API_HOST: string
@@ -7,6 +7,6 @@ interface ImportMetaEnv extends Readonly<Record<string, string>> {
   readonly VITE_API_PROTOCOL: string
 }
 
-interface ImportMeta {
+export interface ImportMeta {
   readonly env: ImportMetaEnv
 }

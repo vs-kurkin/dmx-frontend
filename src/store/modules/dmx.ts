@@ -1,8 +1,9 @@
-import { getValues } from '@/api/dmx.ts'
-import type { Context, Store } from '@/store'
+import { getValues } from '@/api/dmx'
+import type { Context, StoreProject } from '@/store'
+import type { ChannelList, SerialID } from '@dmx-cloud/dmx-types'
 
 export type ChannelPayload = {
-  id: string;
+  id: SerialID;
   channel: number;
   value: number;
 };
@@ -10,10 +11,14 @@ export type ChannelPayload = {
 export type BulkChannelPayload = number[];
 
 export interface DMXState {
-  channel: number[];
+  channel: ChannelList;
 }
 
+type Ctx = Context<DMXState>
+
 export default {
+  namespaced: true,
+
   state: {
     channel: new Array(513).fill(0),
   },
@@ -30,20 +35,26 @@ export default {
   },
 
   actions: {
-    async updateChannel(this: Store, _ctx: Context, payload: ChannelPayload) {
-      await this.socket?.emitSocket('update', payload)
+    update({ commit }: Ctx, payload: ChannelPayload) {
+      const store = this as unknown as StoreProject;
 
-      this.commit('channel', payload)
+      store.socket.emitSocket<ChannelPayload>('channel', payload)
+
+      commit('channel', payload)
     },
 
-    async getAllChannelValues(this: Store, _ctx: Context, name: string) {
+    async pull({ commit }: Ctx, name: string) {
       const values = await getValues(name)
 
-      this.commit('channels', values)
+      commit('channels', values)
     },
 
-    resetAllChannelValues(this: Store) {
-      this.commit('channels', new Array(512).fill(0))
+    reset({ commit }: Ctx) {
+      commit('channels', new Array(512).fill(0))
+    },
+
+    push({ commit }: Ctx, values: BulkChannelPayload) {
+      commit('channels', values)
     },
   },
 }

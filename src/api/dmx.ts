@@ -1,44 +1,29 @@
-import { DELETE, GET, jsonParse, POST, setup } from '@/utils/fetch'
-
-export type Driver =
-  | 'null'
-  | 'socketio'
-  | 'dmx4all'
-  | 'enttec-usb-dmx-pro'
-  | 'enttec-open-usb-dmx'
-  | 'dmxking-ultra-dmx-pro'
-  | 'artnet'
-  | 'bbdmx'
-  | 'sacn';
+import { DELETE, GET, HEADER_JSON, jsonParse, POST, target } from '@/utils/fetch'
+import type { SerialDriver, SerialID, SerialUniverses } from '@dmx-cloud/dmx-types'
 
 export type UniverseOptions = {
-  id: string
+  id: SerialID
   path: string
-  driver: string
+  driver: SerialDriver
 }
 
-const dmx = setup('dmx', jsonParse)
-
-export const getDrivers = () =>
-  dmx<Driver>('/drivers', GET)
+const dmx = target('dmx', jsonParse)
 
 export const getUniverses = () =>
-  dmx<string[]>('', GET)
+  dmx<SerialUniverses>('', GET)
 
 export const addUniverse = (options: UniverseOptions) =>
   dmx<void>('', {
     ...POST,
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    ...HEADER_JSON,
     body: JSON.stringify(options),
   })
 
-export const deleteUniverse = (id: string) =>
+export const deleteUniverse = (id: SerialID) =>
   dmx<void>(`/${id}`, DELETE)
 
 export const deleteAllUniverses = () =>
   dmx<void>('', DELETE)
 
-export const getValues = (id: string) =>
+export const getValues = (id: SerialID) =>
   dmx<number[]>(`/${id}/values/`, GET)

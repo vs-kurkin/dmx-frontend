@@ -1,26 +1,25 @@
 <script lang="ts" setup type="tsx">
-import type { SerialDevice } from '@/api/serial.ts'
-import { type Store, StoreKey } from '@/store'
-import type { DeviceMap } from '@/store/modules/serial.ts'
-import { PrimeIcons } from 'primevue/api'
-import Button from 'primevue/button'
+import { getStore } from '@/store'
+import { awaitErrorHandler, errorHandler } from '@/utils/helpers'
+import type { Serial } from '@dmx-cloud/dmx-types'
+import { PrimeIcons } from '@primevue/core/api'
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions'
-import Listbox from 'primevue/listbox'
 import { useToast } from 'primevue/usetoast'
-import { inject, type Ref, ref, watch } from 'vue'
-import { useStore } from 'vuex'
+import { computed, inject, type Ref, ref, watch } from 'vue'
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
-const store: Store = useStore(StoreKey)
+const store = getStore()
 const toast = useToast()
 
-const devices = ref<DeviceMap>(store.state.serial.devices)
-const drivers = ref<string[]>(store.state.serial.drivers)
-const device = ref<SerialDevice>()
+const devices = computed(() => store.state.serial.devices)
+const drivers = computed(() => store.state.serial.drivers)
+const device = ref<Serial>()
 const driver = ref<string>()
 
 watch(device, (value) => {
-  dialogRef && (dialogRef.value.data.step = value ? 1 : 0)
+  if (dialogRef) {
+    dialogRef.value.data.step = Number(Boolean(value))
+  }
 })
 
 const addUniverse = async () => {
@@ -29,16 +28,15 @@ const addUniverse = async () => {
       return
     }
 
-    await store.dispatch('addUniverse', {
+    await store.dispatch('serial/select', device.value)
+    await store.dispatch('serial/add', {
       device: device.value,
       driver: driver.value,
     })
 
-    await store.dispatch('setCurrentUniverse', device.value.serialNumber)
-
     dialogRef?.value.close()
   } catch (error) {
-    errorHandler('Failed to add device', (error as Error).message)
+    errorHandler(toast)('Failed to add device', (error as Error).message)
 
     throw error
   }
@@ -48,23 +46,16 @@ const refreshData = async () => {
   device.value = undefined
   driver.value = undefined
 
-  await store.dispatch('updateSerial')
+  await store.dispatch('serial/init')
+    .catch(awaitErrorHandler(toast, 'Failed to serial init'))
 }
-
-const errorHandler = (summary: string, detail: string) =>
-  toast.add({
-    summary,
-    detail,
-    severity: 'error',
-    life: 2000,
-  })
 </script>
 
 <template>
   <div class="flex gap-3 align-items-start flex-nowrap">
     <Listbox
       v-model="device"
-      :options="Array.from(devices.values())"
+      :options="[...devices.values()]"
       data-key="serialNumber"
       empty-message="No devices available"
       list-style="height: 230px"
@@ -85,10 +76,14 @@ const errorHandler = (summary: string, detail: string) =>
       :icon="PrimeIcons.TIMES"
       label="Cancel"
       severity="secondary"
-      @click="dialogRef.close"
+      @click="dialogRef?.close"
     />
 
-    <Button :icon="PrimeIcons.REFRESH" label="Refresh" @click="refreshData" />
+    <Button
+      :icon="PrimeIcons.REFRESH"
+      label="Refresh"
+      @click="refreshData"
+    />
 
     <Button
       :disabled="!device || !driver"

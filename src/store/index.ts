@@ -1,36 +1,36 @@
 import modules from '@/store/modules'
-import type { DMXState } from '@/store/modules/dmx.ts'
-import type { SerialState } from '@/store/modules/serial.ts'
-import type { SettingsState } from '@/store/modules/settings.ts'
-import type { StatusState } from '@/store/modules/status.ts'
-
+import type { DeviceState } from '@/store/modules/device'
+import type { DMXState } from '@/store/modules/dmx'
+import type { SerialState } from '@/store/modules/serial'
+import type { SettingsState } from '@/store/modules/settings'
+import type { StatusState } from '@/store/modules/status'
 import plugins from '@/store/plugins'
-import type { StorageFacade } from '@/store/plugins/localStorage.ts'
-import type { SocketAdapter } from '@/store/plugins/websocket.ts'
+import { type StorageFacade } from '@/store/plugins/localStorage'
+import { type SocketAdapter } from '@/store/plugins/ws'
 import { type InjectionKey } from 'vue'
+import { type ActionContext, createStore, type Store, useStore } from 'vuex'
 
-import { type ActionContext, createStore, Store as VuexStore } from 'vuex'
+export interface StoreExtends {
+  socket: SocketAdapter
+  storage: StorageFacade
+  sse: EventSource
+}
 
-export type State = {
-  connected: boolean;
+export interface State {
   dmx: DMXState;
-  error: string;
+  serial: SerialState;
   settings: SettingsState;
   status: StatusState;
-  serial: SerialState;
+  device: DeviceState;
 }
 
-export interface Store<S=State> extends VuexStore<S> {
-  socket?: SocketAdapter;
-  storage?: StorageFacade;
-}
+export type StoreProject = Store<State> & StoreExtends
+export type StoreKey = InjectionKey<StoreProject>
+export type Context<S> = ActionContext<S, State>
 
-// noinspection JSUnusedGlobalSymbols
-export type Context<S = State, R = State> = ActionContext<S, R>;
+export const key = Symbol() as StoreKey
+export const store = createStore<State>({ modules, plugins }) as StoreProject
 
-export default createStore({
-  plugins,
-  modules,
-})
-
-export const StoreKey: InjectionKey<Store> = Symbol()
+export const getStore = () => useStore<State>(key) as StoreProject
+// TODO:
+// export const getState = (namespace: keyof typeof store.state): typeof store.state[typeof namespace] => store.state[namespace]

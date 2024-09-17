@@ -1,10 +1,13 @@
-import type { Context, Store } from '@/store'
+import type { Context } from '@/store'
 
 export interface StatusState {
   connected: boolean
 }
 
+type Ctx = Context<StatusState>
+
 export default {
+  namespaced: true,
   state: {
     connected: false,
   },
@@ -16,15 +19,15 @@ export default {
   },
 
   actions: {
-    connect(this: Store, { state }: Context) {
+    connect({ state, commit }: Ctx) {
       if (!state.connected) {
-        this.commit('connected', true)
+        commit('connected', true)
       }
     },
 
-    disconnect(this: Store, { state }: Context) {
+    disconnect({ state, commit }: Ctx) {
       if (state.connected) {
-        this.commit('connected', false)
+        commit('connected', false)
       }
     },
   },

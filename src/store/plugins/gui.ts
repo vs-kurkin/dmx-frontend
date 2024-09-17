@@ -1,16 +1,16 @@
-import type { Store } from '@/store'
-import { type PrimeVueConfiguration, usePrimeVue } from 'primevue/config'
+import type { StoreProject } from '@/store'
+import { type PrimeVueConfiguration, type usePrimeVue } from 'primevue/config'
 import { watch } from 'vue'
 
 type PrimeVue = ReturnType<typeof usePrimeVue>;
 type Theme = string;
 type Scale = number;
-type InputStyle = PrimeVueConfiguration['inputStyle'];
+type Input = PrimeVueConfiguration['inputVariant'];
 
 type Settings = {
   theme: Theme
   scale: Scale
-  inputStyle: InputStyle
+  input: Input
 }
 
 export const THEME_LINK_ID = 'theme_css'
@@ -26,25 +26,25 @@ const setScale = (value: Scale) => {
   document.documentElement.style.fontSize = `${1 + value / 10}rem`
 }
 
-const setInputStyle = (inputStyle: InputStyle) => {
-  primeVue.config.inputStyle = inputStyle
+const setInputStyle = (name: Input) => {
+  primeVue.config.inputVariant = name
 }
 
 const setTheme = (name: Theme) => {
   if (currentSettings.theme) {
-    primeVue.changeTheme(currentSettings.theme, name, THEME_LINK_ID)
+    primeVue.config.theme = name
   }
 }
 
 export const applySettings = (settings: Settings) => {
   setTheme(settings.theme)
   setScale(settings.scale)
-  setInputStyle(settings.inputStyle)
+  setInputStyle(settings.input)
 
   currentSettings = { ...settings }
 }
 
-export default (store: Store) => {
+export default (store: StoreProject) => {
   const {settings} = store.state
 
   currentSettings = { ...settings }

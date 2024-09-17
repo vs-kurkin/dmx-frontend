@@ -1,7 +1,5 @@
 <script lang="ts" setup type="tsx">
-import DMXChannel from '@/components/dmx/DMXChannel.vue'
-import Paginator, { type PageState } from 'primevue/paginator'
-import ScrollPanel from 'primevue/scrollpanel'
+import { type PageState } from 'primevue/paginator'
 import { ref } from 'vue'
 
 export interface Props {

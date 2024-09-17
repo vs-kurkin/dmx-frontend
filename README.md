@@ -1,4 +1,4 @@
-# @vk/dmx-frontend
+# @dmx-cloud/dmx-frontend
 
 ## Project setup
 ```
