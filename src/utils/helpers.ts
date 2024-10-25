@@ -2,10 +2,10 @@ import { TYPE } from '@/utils/constants'
 import type { ChannelType } from '@dmx-cloud/dmx-types'
 import type { ToastServiceMethods } from 'primevue/toastservice'
 
-export const getChannelType = (type: ChannelType): string => TYPE[type]
+export const getChannelType = (type: ChannelType): string => TYPE?.[type]
 
 export const errorHandler = (toast: ToastServiceMethods) => (summary: string, detail = '') =>
-  toast.add({
+  toast && toast.add({
     summary,
     detail,
     severity: 'error',

@@ -13,69 +13,64 @@ export type EventData = unknown;
 export type SocketEvent = string;
 export type StoreEvent = string;
 
-export type EventListener<P = EventData> = <D = P>(data: D) => void;
-
+export type EventListener<D = EventData> = (data: D) => void;
 export type EventEmitter<E, D = EventData> = (event: E, ...args: D[]) => void;
-
 export type MutationHandler<P> = (payload: P) => void;
 
 export class SocketAdapter {
-  private readonly socket: Socket
-  private readonly store: StoreProject
-
-  constructor(socket: Socket, store: StoreProject) {
+  constructor(private readonly socket: Socket, private readonly store: StoreProject) {
     this.socket = socket
     this.store = store
   }
 
-  connect(): SocketAdapter {
+  connect() {
     this.socket.connect()
 
     return this
   }
 
-  disconnect(): SocketAdapter {
+  disconnect() {
     this.socket.disconnect()
 
     return this
   }
 
-  async emitStore<D = EventData>(event: StoreEvent, data: D): Promise<SocketAdapter> {
+  async emitStore<D = EventData>(event: StoreEvent, data: D) {
     await this.store.dispatch(event, data)
 
     return this
   }
 
-  emitSocket<D = EventData>(event: SocketEvent, data: D): SocketAdapter {
+  emitSocket<D = EventData>(event: SocketEvent, data: D) {
     this.socket.emit(event, data)
 
     return this
   }
 
-  onSocket<D = EventData>(event: SocketEvent, listener: EventListener<D>): SocketAdapter {
+  onSocket<D = EventData>(event: SocketEvent, listener: EventListener<D>) {
     this.socket.on(event, listener)
 
     return this
   }
 
-  onStore<D = EventData>(event: StoreEvent, listener: EventListener<D>): SocketAdapter {
-    const handler: MutationHandler<MutationPayload> = ({ payload, type }) => event === type && listener<D>(payload as D)
+  onStore<D = EventData>(event: StoreEvent, listener: EventListener<D>) {
+    const handler: MutationHandler<MutationPayload> = ({ payload, type }) => {
+      if (event === type) {
+        listener(payload as D)
+      }
+    }
 
     this.store.subscribe(handler)
 
     return this
   }
 
-  pipeSocket<T = StoreEvent, D = EventData>(source: SocketEvent, target: T, emitter: EventEmitter<T, D>): SocketAdapter {
-    const listener = ((data: D) => emitter(target, data)) as EventListener<D>
-
-    return this.onSocket<D>(source, listener)
+  pipeSocket<T = StoreEvent, D = EventData>(source: SocketEvent, target: T, emitter: EventEmitter<T, D>) {
+    return this.onSocket<D>(source, (data) => emitter(target, data))
   }
 
-  pipeStore<T = SocketEvent, D = EventData>(source: StoreEvent, target: T, emitter: EventEmitter<T, D>): SocketAdapter {
-    const listener = ((data: D) => emitter(target, data)) as EventListener<D>
-
-    return this.onStore<D>(source, listener)
+  pipeStore<T = SocketEvent, D = EventData>(source: StoreEvent, target: T, emitter: EventEmitter<T, D>) {
+    return this.onStore<D>(source, (data) => emitter(target, data))
   }
 }
 
@@ -83,4 +78,4 @@ export default (store: StoreProject) => {
   const socket: Socket = io(`${wsHost}:${wsPort}`, options)
 
   store.socket = new SocketAdapter(socket, store)
-}
+};

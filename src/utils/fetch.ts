@@ -22,23 +22,23 @@ export const errorHandler: Handler = async <T>(response: Response): Promise<T> =
   return await response.text() as T
 }
 
-// Callback of JSON data processing for HTTP request results
+// JSON data processing callback
 export const jsonParse: Handler = async <T>(response: Response): Promise<T> =>
-  response.ok ? await response.json() as T : await errorHandler<T>(response)
+  response.ok ? await response.json() as T : errorHandler<T>(response)
 
-// Function of send HTTP request
+// Function to send HTTP requests
 export const request: Sender = async <T>(url = '', options?: Options): Promise<T> =>
   await fetch(new URL(url, BASE_URL), options) as T
 
-// Controller of HTTP request
-export const sender = <R>(defaultOptions?: Options, handler: Handler = errorHandler): Sender =>
+// HTTP request controller
+export const createSender = <R>(defaultOptions?: Options, handler: Handler = errorHandler): Sender =>
   async <T=R>(url = '', options?: Options): Promise<T> =>
-    await handler<T>(await request(url, { ...defaultOptions, ...options }))
+    handler<T>(await request(url, { ...defaultOptions, ...options }))
 
 // Function of configuration HTTP request
 export const target = (base = '', handler: Handler = errorHandler): Sender =>
   async <T>(path = '', options?: Options): Promise<T> =>
-    await sender<T>(options, handler)(`${base}${path}`)
+    createSender<T>(options, handler)(`${base}${path}`)
 
 
 export const GET: Options = { method: 'GET' }
@@ -48,9 +48,9 @@ export const PATCH: Options = { method: 'PATCH' }
 export const DELETE: Options = { method: 'DELETE' }
 
 
-export const get = sender(GET)
-export const post = sender(POST)
-export const put = sender(PUT)
-export const patch = sender(PATCH)
-export const del = sender(DELETE)
+export const get = createSender(GET)
+export const post = createSender(POST)
+export const put = createSender(PUT)
+export const patch = createSender(PATCH)
+export const del = createSender(DELETE)
 

@@ -20,17 +20,16 @@ export default {
   namespaced: true,
 
   state: {
-    channel: new Array(513).fill(0),
+    channel: Array(513).fill(0), // Initialize with 513 channels set to 0
   },
 
   mutations: {
-    channel(state: DMXState, payload: ChannelPayload) {
-      state.channel[payload.channel] = payload.value
+    channel(state: DMXState, { channel, value }: ChannelPayload) {
+      state.channel[channel] = value; // Update specific channel value
     },
 
     channels(state: DMXState, values: BulkChannelPayload) {
-      state.channel.length = 0
-      state.channel.push(0, ...values)
+      state.channel = [0, ...values]; // Reset and set new channel values
     },
   },
 

@@ -4,7 +4,7 @@ import type { Context } from '@/store'
 import type { Serial, SerialDevices, SerialDriver, SerialDrivers, SerialID, SerialList, SerialProperty, SerialUniverses } from '@dmx-cloud/dmx-types'
 
 export type SerialState = {
-  current: SerialName | void;
+  current?: SerialName;
   universes: SerialUniverses;
   devices: SerialDevices;
   drivers: SerialDrivers;
@@ -22,16 +22,15 @@ export default {
   namespaced: true,
 
   state: {
-    universes: [],
+    universes: [] as SerialUniverses,
     current: undefined,
-    devices: new Map,
-    drivers: [],
+    devices: new Map<SerialID, Serial>(),
+    drivers: [] as SerialDrivers,
   },
 
   mutations: {
     universes(state: SerialState, list: SerialList) {
-      state.universes.length = 0
-      state.universes.push(...list)
+      state.universes = [...list]
     },
 
     drivers(state: SerialState, list: SerialDrivers) {
@@ -40,9 +39,7 @@ export default {
 
     devices(state: SerialState, list: SerialList) {
       if (Array.isArray(list)) {
-        list.forEach((serial) => {
-          state.devices.set(serial.serialNumber, serial)
-        })
+        list.forEach(serial => state.devices.set(serial.serialNumber, serial))
       }
     },
 
@@ -68,29 +65,26 @@ export default {
     },
 
     async add({ state, commit }: Ctx, payload: UniversePayload) {
-      if (payload?.device == null) {
-        throw new Error('Universe id must be defined')
-      }
+      const { device } = payload
 
-      if (payload.device.path == null) {
-        throw new Error('Universe path must be defined')
-      }
+      if (!device) {throw new Error('Universe id must be defined')}
+      if (!device.path) {throw new Error('Universe path must be defined')}
 
-      if (state.universes.includes(payload.device.serialNumber)) {
-        throw new Error(`Universe with id ${payload.device.serialNumber} already exists`)
+      if (state.universes.includes(device.serialNumber)) {
+        throw new Error(`Universe with id ${device.serialNumber} already exists`)
       }
 
       await addUniverse({
-        id: payload.device.serialNumber,
-        path: payload.device.path,
+        id: device.serialNumber,
+        path: device.path,
         driver: payload.driver,
       })
 
-      commit('universes', state.universes.concat(payload.device.serialNumber))
+      commit('universes', [...state.universes, device.serialNumber])
     },
 
     async remove({ state, commit }: Ctx, id: SerialID) {
-      if (!state.universes.some((universe: SerialID) => universe === id)) {
+      if (!state.universes.includes(id)) {
         throw new Error(`Missing universe "${id}"`)
       }
 
@@ -104,7 +98,7 @@ export default {
     },
 
     async clear({ state, commit }: Ctx) {
-      if (!state.universes.length) {
+      if (state.universes.length === 0) {
         return
       }
 
@@ -126,7 +120,7 @@ export default {
       commit('drivers', drivers)
     },
 
-    select({ state, commit }: Ctx, id: SerialName | void) {
+    select({ state, commit }: Ctx, id?: SerialName) {
       if (state.current !== id) {
         commit('current', id)
       }

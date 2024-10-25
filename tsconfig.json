@@ -9,26 +9,19 @@
     "esModuleInterop": false,
     "importHelpers": true,
     "inlineSources": false,
+    "isolatedModules": true,
     "jsx": "preserve",
     "jsxImportSource": "vue",
-    "isolatedModules": true,
-    "lib": [
-      "ESNext",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": [ "ESNext", "DOM", "DOM.Iterable" ],
     "module": "ESNext",
     "moduleResolution": "Node",
     "noEmit": true,
     "noEmitHelpers": true,
     "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noImplicitUseStrict": true,
     "paths": {
-      "@/*": [
-        "src/*.ts",
-        "src/*/index.ts",
-        "src/*.vue",
-        "src/*.json"
-      ]
+      "@/*": [ "src/*.ts", "src/*/index.ts", "src/*.vue", "src/*.json" ]
     },
     "resolveJsonModule": true,
     "resolvePackageJsonImports": true,
@@ -39,32 +32,19 @@
     "strictBindCallApply": true,
     "strictNullChecks": true,
     "target": "ESNext",
-    "types": [
-      "jest",
-      "vite/client"
-    ],
+    "types": [ "jest", "vite/client" ],
     "useDefineForClassFields": true,
     "useUnknownInCatchVariables": true,
     "verbatimModuleSyntax": true
   },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ],
-  "extends": [
-    "@vue/tsconfig/tsconfig.dom.json"
-  ],
-  "include": [
-    "**/*.ts",
-    "**/*.vue"
-  ],
+  "exclude": [ "node_modules", "dist" ],
+  "extends": [ "@vue/tsconfig/tsconfig.dom.json" ],
+  "include": [ "**/*.ts", "**/*.vue" ],
   "rules": {
-    "@typescript-eslint/indent": [
-      "error",
-      "space"
-    ],
+    "@typescript-eslint/indent": [ "error", "space" ],
     "@typescript-eslint/no-explicit-any": [
-      "error", {
+      "error",
+      {
         "fixToUnknown": true
       }
     ],

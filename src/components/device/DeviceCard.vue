@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import InputField from '@/components/common/InputField.vue'
 import CreateChannel from '@/components/device/CreateChannel.vue'
 import { getStore } from '@/store'
 import { awaitErrorHandler } from '@/utils/helpers'
@@ -9,20 +10,14 @@ import { type InputTextProps } from 'primevue/inputtext'
 import { useConfirm } from 'primevue/useconfirm'
 import { useDialog } from 'primevue/usedialog'
 import { useToast } from 'primevue/usetoast'
-import { computed, ref, toValue, watch, watchEffect } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const dialog = useDialog()
 const confirm = useConfirm()
 const toast = useToast()
 
-const device = defineModel<Device>({
-  required: true,
-})
-
-const emit = defineEmits<{
-  update: [Device]
-}>()
-
+const device = defineModel<Device>({ required: true })
+const emit = defineEmits<{ update: [Device] }>()
 const store = getStore()
 const list = computed(() => store.state.device.list)
 
@@ -31,37 +26,42 @@ const isInvalid = ref(true)
 const isChanged = ref(false)
 const changed = ref<Device>(null)
 
-const validate = (el: InputTextProps | null): void => {
-  isInvalid.value = el?.invalid ?? isInvalid.value
+const validateInput = (el: InputTextProps): void => {
+  isInvalid.value = el?.invalid ?? false
 }
 
 const reset = () => {
-  changed.value = { ...toValue(device) }
+  changed.value = { ...device.value }
   isChanged.value = false
   isInvalid.value = false
 }
 
-const update = async () => {
+const updateDevice = async () => {
   if (index.value in list.value) {
-    await store.dispatch('device/update', {
-      index: toValue(index),
-      device: toValue(changed),
-    })
-      .catch(awaitErrorHandler(toast, 'Failed to update device'))
-
-    emit('update', device.value)
+    try {
+      await store.dispatch('device/update', {
+        index: index.value,
+        device: changed.value,
+      })
+      emit('update', device.value)
+    } catch (error) {
+      awaitErrorHandler(toast, 'Failed to update device')(error as Error)
+    }
   }
 }
 
-const remove = async () => {
+const removeDevice = async () => {
   confirm.require({
     async accept() {
-      await store.dispatch('device/remove', toValue(index))
-        .catch(awaitErrorHandler(toast, 'Failed to remove device'))
+      try {
+        await store.dispatch('device/remove', index.value)
+      } catch (error) {
+        awaitErrorHandler(toast, 'Failed to remove device')(error as Error)
+      }
     },
     acceptClass: 'p-button-danger',
     acceptIcon: PrimeIcons.CHECK,
-    header: `Delete device`,
+    header: 'Delete device',
     icon: PrimeIcons.INFO_CIRCLE,
     message: `Do you want to delete device "${device.value.name}"?`,
     rejectIcon: PrimeIcons.TIMES,
@@ -69,16 +69,18 @@ const remove = async () => {
 }
 
 const createChannel = () => {
-  const device = toValue(changed)
+  const currentDevice = changed.value
 
   dialog.open(CreateChannel, {
-    data: device,
+    data: currentDevice,
     onClose({ data }: DynamicDialogCloseOptions) {
-      data && store.dispatch('device/setChannels', {
-        index: toValue(index),
-        channels: (device.channels ?? []).concat([data]),
-      })
-        .catch(awaitErrorHandler(toast, 'Failed to add channel'))
+      if (data) {
+        store.dispatch('device/setChannels', {
+            index: index.value,
+            channels: [...(currentDevice.channels ?? []), data],
+          })
+          .catch(awaitErrorHandler(toast, 'Failed to add channel'))
+      }
     },
     props: {
       closable: true,
@@ -91,18 +93,15 @@ const createChannel = () => {
   })
 }
 
-watchEffect(() => {
-  if (device.value) {
-    console.log('device', device.value)
+watch(device, (newDevice) => {
+  if (newDevice) {
     reset()
-
-    index.value = list.value.indexOf(device.value)
+    index.value = list.value.indexOf(newDevice)
   }
 })
 
 watch(changed, () => {
   isChanged.value = JSON.stringify(device.value) !== JSON.stringify(changed.value)
-  console.log('changed', isChanged.value)
 }, { deep: true })
 </script>
 
@@ -117,7 +116,6 @@ watch(changed, () => {
           <div class="flex-grow-1 font-normal text-lg text-color-secondary">
             Info:
           </div>
-
           <div class="flex gap-2">
             <Button
               :disabled="isInvalid || !isChanged"
@@ -125,7 +123,7 @@ watch(changed, () => {
               label="Save"
               severity="success"
               size="small"
-              @click="update"
+              @click="updateDevice"
             />
             <Button
               :disabled="!isChanged"
@@ -140,7 +138,7 @@ watch(changed, () => {
               label="Delete"
               severity="danger"
               size="small"
-              @click="remove"
+              @click="removeDevice"
             />
           </div>
         </div>
@@ -149,47 +147,28 @@ watch(changed, () => {
       <template #content>
         <div v-if="device">
           <div class="flex flex-column align-items-stretch align-content-stretch flex-wrap gap-1 w-6 min-w-fit">
-            <div class="flex flex-row justify-content-between align-items-center gap-5">
-              <label><b>Name:</b></label>
-              <InputText
-                :ref="node => validate(node as InputTextProps)"
-                v-model="changed.name"
-                :invalid="!changed.name"
-                class="w-20rem"
-                name="name"
-                size="small"
-              />
-            </div>
-
-            <div class="flex flex-row justify-content-between align-items-center">
-              <label><b>Vendor:</b></label>
-              <InputText
-                v-model="changed.vendor"
-                class="w-20rem"
-                name="vendor"
-                size="small"
-              />
-            </div>
-
-            <div class="flex flex-row justify-content-between align-items-center">
-              <label><b>Model:</b></label>
-              <InputText
-                v-model="changed.model"
-                class="w-20rem"
-                name="model"
-                size="small"
-              />
-            </div>
+            <InputField
+              v-model="changed.name"
+              :validate="validateInput"
+              label="Name:"
+            />
+            <InputField
+              v-model="changed.vendor"
+              label="Vendor:"
+            />
+            <InputField
+              v-model="changed.model"
+              label="Model:"
+            />
           </div>
 
           <Divider />
           <div class="text-color-secondary text-lg">
             Channels:
           </div>
-
           <ChannelList
             v-model="changed.channels"
-            @update="update"
+            @update="updateDevice"
           />
 
           <div class="text-center mt-3">
@@ -216,7 +195,6 @@ watch(changed, () => {
   </div>
 </template>
 
-<!--suppress CssUnusedSymbol -->
 <style scoped>
 :deep(.p-card-content) {
   margin: 1rem

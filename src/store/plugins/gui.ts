@@ -3,14 +3,14 @@ import { type PrimeVueConfiguration, type usePrimeVue } from 'primevue/config'
 import { watch } from 'vue'
 
 type PrimeVue = ReturnType<typeof usePrimeVue>;
-type Theme = string;
-type Scale = number;
-type Input = PrimeVueConfiguration['inputVariant'];
+type ThemeSetting = string;
+type ScaleSetting = number;
+type InputSetting = PrimeVueConfiguration['inputVariant'];
 
 type Settings = {
-  theme: Theme
-  scale: Scale
-  input: Input
+  theme: ThemeSetting
+  scale: ScaleSetting
+  input: InputSetting
 }
 
 export const THEME_LINK_ID = 'theme_css'
@@ -22,15 +22,15 @@ export const setupPrimeVue = (instance: PrimeVue) => {
   primeVue = instance
 }
 
-const setScale = (value: Scale) => {
+const setScale = (value: ScaleSetting) => {
   document.documentElement.style.fontSize = `${1 + value / 10}rem`
 }
 
-const setInputStyle = (name: Input) => {
+const setInputStyle = (name: InputSetting) => {
   primeVue.config.inputVariant = name
 }
 
-const setTheme = (name: Theme) => {
+const setTheme = (name: ThemeSetting) => {
   if (currentSettings.theme) {
     primeVue.config.theme = name
   }

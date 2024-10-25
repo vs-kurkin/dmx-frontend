@@ -95,7 +95,7 @@ const update = ({ value }: OrderListReorderEvent) => {
 const select = ([event]: DeviceList) => {
   const index = list.value.indexOf(event)
 
-  if (index === -1 || index === selected.value) {
+  if (index < 0 || index === selected.value) {
     return
   }
 
@@ -104,9 +104,10 @@ const select = ([event]: DeviceList) => {
 }
 
 const focus = (index: DeviceIndex) => {
-  deviceList.value?.changeFocusedOptionIndex(index)
-  deviceList.value?.findFocusedItem()
-    .click()
+  if (deviceList.value) {
+    deviceList.value.changeFocusedOptionIndex(index)
+    deviceList.value.findFocusedItem()?.click()
+  }
 }
 
 const create = () => {
@@ -133,8 +134,8 @@ const moveUp = (event: MouseEvent, index: DeviceIndex) => {
 
   selected.value = index - 1
 
-  focus(index)
   deviceList.value?.moveUp()
+  focus(index)
 }
 
 const moveDown = (event: MouseEvent, index: DeviceIndex) => {
@@ -142,8 +143,8 @@ const moveDown = (event: MouseEvent, index: DeviceIndex) => {
 
   selected.value = index + 1
 
-  focus(index)
   deviceList.value?.moveDown()
+  focus(index)
 }
 </script>
 
