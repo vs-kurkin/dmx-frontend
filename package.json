@@ -2,7 +2,7 @@
   "author": "mail@b-vladi.ru",
   "dependencies": {
     "@primevue/core": "^4.2.1",
-    "@primevue/themes": "^4.2.1",
+    "@primevue/themes": "^4.3.3",
     "@sentry/vue": "^8.37.1",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
@@ -18,7 +18,7 @@
     "@nestjs/devtools-integration": "^0.2.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.9.0",
-    "@typescript-eslint/eslint-plugin": "^8.13.0",
+    "@typescript-eslint/eslint-plugin": "^8.29.0",
     "@typescript-eslint/parser": "^8.13.0",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vitejs/plugin-vue-jsx": "^4.1.2",
